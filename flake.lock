@@ -780,6 +780,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1716715802,
+        "narHash": "sha256-usk0vE7VlxPX8jOavrtpOqphdfqEQpf9lgedlY/r66c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e2dd4e18cc1c7314e24154331bae07df76eb582f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "rocksdb": {
       "flake": false,
       "locked": {
@@ -862,9 +878,7 @@
         "flake-compat": "flake-compat_2",
         "gnome-shell": "gnome-shell",
         "home-manager": "home-manager_3",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1716895458,

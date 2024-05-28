@@ -218,6 +218,9 @@
     };
   };
 
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+  stylix.image = ./modules/wallpapers/one.png;
+
   disabledModules = ["programs.hyprland.nix"];
 
   system.stateVersion = "23.11";

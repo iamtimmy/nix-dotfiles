@@ -8,9 +8,6 @@
     userEmail = "58427647+iamtimmy@users.noreply.github.com";
   };
 
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-  stylix.image = ./modules/wallpapers/one.png;
-
   home.packages = [
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
