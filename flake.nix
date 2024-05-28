@@ -25,7 +25,6 @@
           inputs.home-manager.nixosModules.default
           inputs.hyprland.nixosModules.default
           inputs.chaotic.nixosModules.default
-          inputs.stylix.nixosModules.stylix
         ];
       };
     };

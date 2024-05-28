@@ -1,5 +1,8 @@
 { config, pkgs, inputs, ... }:
 
+let
+  tokyo-night-sddm = pkgs.libsForQt5.callPackage ./tokyo-night-sddm.nix {};
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -48,6 +51,7 @@
     enable = true;
     displayManager.sddm = {
       enable = true;
+      theme = "tokyo-night-sddm";
     };
     desktopManager.gnome.enable = true;
   };
@@ -161,9 +165,13 @@
 
     mangohud
 
+    # sddm theme
+    tokyo-night-sddm
+
     swww
     waybar
     rofi-wayland
+    dolphin
     mako
     libnotify
 
