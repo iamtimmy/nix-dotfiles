@@ -49,10 +49,20 @@ in
 
   services.xserver = {
     enable = true;
-    displayManager.sddm = {
-      enable = true;
-      theme = "tokyo-night-sddm";
+    displayManager = {
+      setupcommands = ''
+        LEFT='DP-1'
+        CENTER='DP-2'
+        RIGHT='DP-3'
+        ${pkgs.xorg.xrandr}/bin/xrandr --output $CENTER --rotate left --output $LEFT --rotate left --left-of $CENTER --output $RIGHT --right-of $CENTER
+      '';
+
+      sddm = {
+        enable = true;
+        theme = "tokyo-night-sddm";
+      };
     };
+
     desktopManager.gnome.enable = true;
   };
 

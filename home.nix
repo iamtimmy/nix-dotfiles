@@ -1,26 +1,11 @@
 { config, pkgs, ... }:
 
-let 
-  hyprlandStartScript = pkgs.pkgs.writeShellScriptBin "start" ''
-    ${pkgs.waybar}/bin/waybar &
-    ${pkgs.swww}/bin/swww init
-    ${pkgs.swww}/bin/swww img ${./modules/wallpapers/one.png} &
-  '';
-in
 {
   programs.git = {
     lfs.enable = true;
     enable = true;
     userName = "iamtimmy";
     userEmail = "58427647+iamtimmy@users.noreply.github.com";
-  };
-
-  wayland.windowManager.hyprland = {
-    enable = true;
-
-    settings = {
-      exec-once = "${hyprlandStartScript}/bin/start";
-    };
   };
 
   home.packages = [
