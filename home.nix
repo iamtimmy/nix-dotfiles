@@ -2,10 +2,14 @@
 
 {
   programs.git = {
+    lfs.enable = true;
     enable = true;
     userName = "iamtimmy";
     userEmail = "58427647+iamtimmy@users.noreply.github.com";
   };
+
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+  stylix.image = ./modules/wallpapers/one.png;
 
   home.packages = [
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -20,6 +24,26 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
+    pkgs.neofetch
+    
+    pkgs.bottles
+
+    pkgs.telegram-desktop
+    pkgs.discord
+    pkgs.freetube
+    pkgs.tidal-hifi
+
+    pkgs.ungoogled-chromium
+
+    pkgs.vscodium-fhs
+    pkgs.jetbrains.rider
+    pkgs.jetbrains.clion
+
+    pkgs.obs-studio
+
+    pkgs.clang
+    pkgs.git-lfs
+    pkgs.mono
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -58,6 +82,7 @@
   };
 
   programs.home-manager.enable = true;
+  nixpkgs.config.allowUnfree = true;
   home.username = "user";
   home.homeDirectory = "/home/user";
   home.stateVersion = "24.05";
