@@ -37,7 +37,9 @@
     pkgs.jetbrains.clion
 
     pkgs.obs-studio
+    pkgs.easyeffects
 
+    pkgs.cmake
     pkgs.clang
     pkgs.git-lfs
     pkgs.mono

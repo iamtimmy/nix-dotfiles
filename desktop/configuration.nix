@@ -12,6 +12,7 @@ in
 
   # Bootloader.
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback.out
@@ -24,6 +25,17 @@ in
     "sdn-aloop"
   ];
 
+  boot.initrd.kernelModules = [
+    "vfio_pci"
+    "vfio"
+    "vfio_iommu_type1"
+
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
+  ];
+
   boot.extraModprobeConfig = ''
     # https://github.com/umlaeute/v4l2loopback
     options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
@@ -33,6 +45,12 @@ in
     "amd_iommu=on"
     "iommu=pt"
     "nvidia_drm.modeset=1"
+    "vfio-pci.ids=1002:699f,1002:aae0" # pass amd gpu to vfio
+  ];
+
+  boot.blacklistedKernelModules = [
+    "amdgpu"
+    "snd_hda_intel"
   ];
   
   boot.loader.systemd-boot.enable = true;
@@ -50,11 +68,11 @@ in
   services.xserver = {
     enable = true;
     displayManager = {
-      setupcommands = ''
+      setupCommands = ''
         LEFT='DP-1'
         CENTER='DP-2'
         RIGHT='DP-3'
-        ${pkgs.xorg.xrandr}/bin/xrandr --output $CENTER --rotate left --output $LEFT --rotate left --left-of $CENTER --output $RIGHT --right-of $CENTER
+        ${pkgs.xorg.xrandr}/bin/xrandr --output $CENTER
       '';
 
       sddm = {
@@ -147,9 +165,26 @@ in
 
   programs.virt-manager.enable = true;
 
+  virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.libvirtd = {
     enable = true;
     qemu.ovmf.enable = true;
+    qemuVerbatimConfig = ''
+    clear_emulation_capabilities = false
+    cgroup_device_acl = [
+      "/dev/input/by-path/pci-0000:2a:00.1-usb-0:5:1.0-event-mouse",
+      "/dev/input/by-path/pci-0000:2a:00.3-usb-0:5:1.0-event",
+
+      "/dev/input/by-path/pci-0000:2a:00.1-usb-0:6.2:1.0-event-kbd",
+      "/dev/input/by-path/pci-0000:2a:00.1-usb-0:6.2:1.2-event",
+
+      "/dev/vfio/vfio",
+      "/dev/vfio/14",
+      "/dev/vfio/15",
+      "/dev/kvm",
+      "/dev/shm/looking-glass",
+    ]
+  '';
   };
 
   programs.hyprland.enable = true;
@@ -161,7 +196,7 @@ in
   programs.nh = {
     enable = true;
     clean.enable = true;
-    clean.extraArgs = "--keep-since 4d --keep 3";
+    clean.extraArgs = "--keep-since 4d --keep 10";
     flake = "/home/user/dotfiles";
   };
 
@@ -172,6 +207,7 @@ in
     helix
     git
     gh
+    ripgrep
 
     mangohud
 
@@ -183,18 +219,12 @@ in
     rofi-wayland
     dolphin
     mako
+    wl-clipboard
+    wl-clip-persist
+    cliphist
     libnotify
 
     steam-run
-
-    mopidy
-    mopidy-iris
-    mopidy-tidal
-    mopidy-local
-    mopidy-notify
-    mopidy-youtube
-    mopidy-spotify
-    mopidy-mopify
   ];
 
   environment.sessionVariables = {
