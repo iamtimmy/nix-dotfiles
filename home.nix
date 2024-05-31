@@ -43,6 +43,8 @@
     pkgs.clang
     pkgs.git-lfs
     pkgs.mono
+
+    pkgs.ventoy-full
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
