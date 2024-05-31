@@ -26,10 +26,6 @@ in
   ];
 
   boot.initrd.kernelModules = [
-    "vfio_pci"
-    "vfio"
-    "vfio_iommu_type1"
-
     "nvidia"
     "nvidia_modeset"
     "nvidia_uvm"
@@ -45,7 +41,6 @@ in
     "amd_iommu=on"
     "iommu=pt"
     "nvidia_drm.modeset=1"
-    "vfio-pci.ids=1002:699f,1002:aae0" # pass amd gpu to vfio
   ];
 
   boot.blacklistedKernelModules = [
@@ -143,9 +138,6 @@ in
       "audio"
       "video"
       "media"
-
-      "libvirtd"
-      "kvm"
     ];
     packages = with pkgs; [
       firefox
@@ -164,28 +156,6 @@ in
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   programs.virt-manager.enable = true;
-
-  virtualisation.spiceUSBRedirection.enable = true;
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu.ovmf.enable = true;
-    qemuVerbatimConfig = ''
-    clear_emulation_capabilities = false
-    cgroup_device_acl = [
-      "/dev/input/by-path/pci-0000:2a:00.1-usb-0:5:1.0-event-mouse",
-      "/dev/input/by-path/pci-0000:2a:00.3-usb-0:5:1.0-event",
-
-      "/dev/input/by-path/pci-0000:2a:00.1-usb-0:6.2:1.0-event-kbd",
-      "/dev/input/by-path/pci-0000:2a:00.1-usb-0:6.2:1.2-event",
-
-      "/dev/vfio/vfio",
-      "/dev/vfio/14",
-      "/dev/vfio/15",
-      "/dev/kvm",
-      "/dev/shm/looking-glass",
-    ]
-  '';
-  };
 
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
@@ -208,6 +178,8 @@ in
     git
     gh
     ripgrep
+    lshw
+    pciutils
 
     mangohud
 
