@@ -44,7 +44,8 @@
     pkgs.git-lfs
     pkgs.mono
 
-    pkgs.ventoy-full
+    pkgs.remmina
+    pkgs.moonlight-qt
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
