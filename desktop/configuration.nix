@@ -138,6 +138,7 @@ in
       "audio"
       "video"
       "media"
+      "adbusers"
     ];
     packages = with pkgs; [
       firefox
@@ -156,6 +157,7 @@ in
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   programs.virt-manager.enable = true;
+  programs.adb.enable = true;
 
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
