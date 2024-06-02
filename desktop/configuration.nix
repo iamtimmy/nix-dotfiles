@@ -186,13 +186,13 @@ in
     # sddm theme
     tokyo-night-sddm
 
-    satty
-
     swww
     waybar
     rofi-wayland
     dolphin
     mako
+    hyprshot
+    satty
     wl-clipboard
     wl-clip-persist
     cliphist
