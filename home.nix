@@ -32,6 +32,7 @@
 
     pkgs.ungoogled-chromium
 
+    pkgs.gpt4all
     pkgs.vscodium-fhs
     pkgs.jetbrains.rider
     pkgs.jetbrains.clion

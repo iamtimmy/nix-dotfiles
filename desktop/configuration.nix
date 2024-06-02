@@ -183,10 +183,10 @@ in
     lshw
     pciutils
 
-    mangohud
-
     # sddm theme
     tokyo-night-sddm
+
+    satty
 
     swww
     waybar
