@@ -61,22 +61,14 @@ in
   i18n.defaultLocale = "en_US.UTF-8";
 
   services.xserver = {
-    enable = true;
+    # enable = true;
     displayManager = {
-      setupCommands = ''
-        LEFT='DP-1'
-        CENTER='DP-2'
-        RIGHT='DP-3'
-        ${pkgs.xorg.xrandr}/bin/xrandr --output $CENTER
-      '';
-
       sddm = {
         enable = true;
         theme = "tokyo-night-sddm";
+        wayland.enable = true;
       };
     };
-
-    desktopManager.gnome.enable = true;
   };
 
   xdg = {
@@ -179,6 +171,7 @@ in
     helix
     git
     gh
+    lf
     ripgrep
     lshw
     pciutils
@@ -197,7 +190,7 @@ in
     wl-clip-persist
     cliphist
     libnotify
-    kdePackages.polkit-kde-agent-1
+    libsForQt5.polkit-kde-agent
 
     steam-run
   ];
