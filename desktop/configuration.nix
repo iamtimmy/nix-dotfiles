@@ -197,6 +197,7 @@ in
     wl-clip-persist
     cliphist
     libnotify
+    kdePackages.polkit-kde-agent-1
 
     steam-run
   ];
