@@ -8,6 +8,43 @@
     userEmail = "58427647+iamtimmy@users.noreply.github.com";
   };
 
+  wayland.windowManager.hyprland.systemd.variables = ["--all"];
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 12;
+  };
+
+  gtk = {
+    enable = true;
+    theme = {
+      package = pkgs.flat-remix-gtk;
+      name = "Flat-Remix-GTK-Grey-Darkest";
+    };
+
+    iconTheme = {
+      package = pkgs.gnome.adwaita-icon-theme;
+      name = "Adwaita";
+    };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = "qtct";
+    style.name = "kvantum";
+  };
+
+  xdg.configFile = {
+    "Kvantum/kvantum.kvconfig".text = ''
+      [General]
+      theme=GraphiteNordDark
+    '';
+
+    "Kvantum/GraphiteNord".source = "${pkgs.graphite-kde-theme}/share/Kvantum/GraphiteNord";
+  };
+
   home.packages = [
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
