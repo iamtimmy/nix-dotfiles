@@ -95,6 +95,14 @@ in
     pulse.enable = true;
     jack.enable = true;
     wireplumber.enable = true;
+    extraConfig.pipewire."92-low-latency" = {
+      context.properties = {
+        default.clock.rate = 48000;
+        default.clock.quantum = 32;
+        default.clock.min-quantum = 32;
+        default.clock.max-quantum = 32;
+      };
+    };
   };
 
   # enable 3d acceleration
@@ -128,6 +136,7 @@ in
 
       "input"
       "audio"
+      "jackaudio"
       "video"
       "media"
       "adbusers"
@@ -193,6 +202,10 @@ in
     libsForQt5.polkit-kde-agent
 
     steam-run
+    wine
+    wineasio
+    winetricks
+    
   ];
 
   environment.sessionVariables = {

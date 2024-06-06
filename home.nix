@@ -77,10 +77,17 @@
     pkgs.obs-studio
     pkgs.easyeffects
 
-    pkgs.cmake
-    pkgs.clang
     pkgs.git-lfs
+    pkgs.cmake
+    pkgs.ninja
+    pkgs.clang
+    pkgs.llvmPackages_latest.llvm
     pkgs.mono
+    pkgs.python3
+    pkgs.zig
+    pkgs.zls
+    pkgs.luajit
+    pkgs.lua-language-server
 
     pkgs.remmina
     pkgs.moonlight-qt
