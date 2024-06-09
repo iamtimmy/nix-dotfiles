@@ -76,6 +76,8 @@ in
     portal.enable = true;
   };
 
+
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -165,6 +167,7 @@ in
 
   programs.steam.enable = true;
   programs.gamescope.enable = true;
+  programs.firejail.enable = true;
 
   programs.nh = {
     enable = true;
@@ -205,12 +208,35 @@ in
     wine
     wineasio
     winetricks
-    
   ];
 
   environment.sessionVariables = {
-    FLAKE = "/home/user/dotfiles";
+    FLAKE = "$HOME/dotfiles";
     NIXOS_OZONE_WL = "1";
+
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_CONFIG_DIR = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+    XDG_CURRENT_TYPE = "wayland";
+    XDG_SESSIONS_TYPE = "wayland";
+    __GL_GSYNC_ALLOWED = "0";
+    __GL_VRR_ALLOWED = "0";
+
+    LIBVA_DRIVER_NAME = "nvidia";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_TYPE_LIBRARY_NAME = "nvidia";
+    GDK_BACKEND = "wayland,x11,*";
+    QT_QPA_PLATFORM = "wayland;xcb";
+    CLUTTER_BACKEND = "wayland";
+    SDL_VIDEODRIVER = "wayland";
+
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
 
   services.power-profiles-daemon.enable = true;

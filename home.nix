@@ -73,11 +73,14 @@
     pkgs.vscodium-fhs
     pkgs.jetbrains.rider
     pkgs.jetbrains.clion
+    pkgs.jetbrains.idea-community
 
     pkgs.obs-studio
     pkgs.easyeffects
 
     pkgs.git-lfs
+    pkgs.unzip
+    pkgs.gnumake
     pkgs.cmake
     pkgs.ninja
     pkgs.clang
@@ -85,9 +88,13 @@
     pkgs.mono
     pkgs.python3
     pkgs.zig
-    pkgs.zls
     pkgs.luajit
+
+    pkgs.nil
+    pkgs.zls
     pkgs.lua-language-server
+
+    pkgs.vcpkg
 
     pkgs.remmina
     pkgs.moonlight-qt
