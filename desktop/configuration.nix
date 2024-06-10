@@ -173,7 +173,6 @@ in
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 4d --keep 10";
-    flake = "/home/user/dotfiles";
   };
 
   # List packages installed in system profile. To search, run:
@@ -233,7 +232,7 @@ in
     GDK_BACKEND = "wayland,x11,*";
     QT_QPA_PLATFORM = "wayland;xcb";
     CLUTTER_BACKEND = "wayland";
-    SDL_VIDEODRIVER = "wayland";
+    SDL_VIDEODRIVER = "wayland,x11";
 
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
