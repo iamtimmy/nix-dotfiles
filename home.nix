@@ -8,6 +8,18 @@
     userEmail = "58427647+iamtimmy@users.noreply.github.com";
   };
 
+  programs.neovim = {
+    enable = true;
+
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+
+    plugins = with pkgs.vimPlugins; [
+      nvchad
+    ];
+  };
+
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
 
   home.pointerCursor = {
@@ -68,8 +80,8 @@
     pkgs.tidal-hifi
 
     pkgs.ungoogled-chromium
-
     pkgs.gpt4all
+
     pkgs.vscodium-fhs
     pkgs.jetbrains.rider
     pkgs.jetbrains.clion
