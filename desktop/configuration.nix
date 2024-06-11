@@ -12,6 +12,7 @@ in
 
   # Bootloader.
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  chaotic.scx.enable = true;
   boot.supportedFilesystems = [ "ntfs" ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -74,9 +75,12 @@ in
   xdg = {
     sounds.enable = true;
     portal.enable = true;
+
+    portal.xdgOpenUsePortal = true;
+    portal.extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+    ];
   };
-
-
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -92,6 +96,7 @@ in
 
   services.pipewire = {
     enable = true;
+    systemWide = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
@@ -141,6 +146,7 @@ in
       "jackaudio"
       "video"
       "media"
+      "pipewire"
       "adbusers"
     ];
     packages = with pkgs; [
@@ -175,6 +181,11 @@ in
     clean.extraArgs = "--keep-since 4d --keep 10";
   };
 
+  programs.git = {
+    enable = true;
+    lfs.enable = true;
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -202,6 +213,10 @@ in
     cliphist
     libnotify
     libsForQt5.polkit-kde-agent
+
+    xwaylandvideobridge
+    pavucontrol
+    helvum
 
     steam-run
     wine

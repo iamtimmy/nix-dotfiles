@@ -1,23 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  programs.git = {
-    lfs.enable = true;
-    enable = true;
-    userName = "iamtimmy";
-    userEmail = "58427647+iamtimmy@users.noreply.github.com";
-  };
-
   programs.neovim = {
     enable = true;
 
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-
-    plugins = with pkgs.vimPlugins; [
-      nvchad
-    ];
   };
 
   wayland.windowManager.hyprland.systemd.variables = ["--all"];

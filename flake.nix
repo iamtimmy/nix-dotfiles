@@ -14,6 +14,10 @@
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ghostty = {
+      url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    };
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
@@ -21,10 +25,15 @@
       desktop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
-          ./desktop/configuration.nix
           inputs.home-manager.nixosModules.default
           inputs.hyprland.nixosModules.default
           inputs.chaotic.nixosModules.default
+          {
+            environment.systemPackages = [
+              inputs.ghostty.packages.x86_64-linux.default
+            ];
+          }
+          ./desktop/configuration.nix
         ];
       };
     };
