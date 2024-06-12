@@ -48,6 +48,10 @@ in
     "amdgpu"
     "snd_hda_intel"
   ];
+
+  boot.kernel.sysctl = {
+    "kernel.unprivileged_userns_clone" = 1;
+  };
   
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -62,7 +66,7 @@ in
   i18n.defaultLocale = "en_US.UTF-8";
 
   services.xserver = {
-    # enable = true;
+    enable = true;
     displayManager = {
       sddm = {
         enable = true;
@@ -70,16 +74,16 @@ in
         wayland.enable = true;
       };
     };
+    desktopManager.gnome.enable = true;
   };
 
+  programs.dconf.enable = true;
+  
   xdg = {
     sounds.enable = true;
     portal.enable = true;
 
     portal.xdgOpenUsePortal = true;
-    portal.extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
   };
 
   # Configure keymap in X11
@@ -164,12 +168,15 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.cores = 8;
+  nix.settings.max-jobs = 3;
 
   programs.virt-manager.enable = true;
   programs.adb.enable = true;
 
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
+  programs.hyprland.package = pkgs.hyprland.override { debug = true; };
 
   programs.steam.enable = true;
   programs.gamescope.enable = true;
@@ -222,6 +229,9 @@ in
     wine
     wineasio
     winetricks
+
+    gnome.adwaita-icon-theme
+    gnomeExtensions.appindicator
   ];
 
   environment.sessionVariables = {
