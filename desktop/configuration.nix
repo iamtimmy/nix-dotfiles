@@ -231,7 +231,7 @@ in
     winetricks
 
     gnome.adwaita-icon-theme
-    gnomeExtensions.appindicator
+    # gnomeExtensions.appindicator
   ];
 
   environment.sessionVariables = {
