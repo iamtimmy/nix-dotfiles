@@ -13,6 +13,7 @@ in
   # Bootloader.
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;
+  powerManagement.cpuFreqGovernor = "performance";
   boot.supportedFilesystems = [ "ntfs" ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -176,9 +177,15 @@ in
 
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
-  programs.hyprland.package = pkgs.hyprland.override { debug = true; };
+  # programs.hyprland.package = pkgs.hyprland.override { debug = true; };
 
   programs.steam.enable = true;
+  programs.steam.protontricks.enable = true;
+  programs.steam.gamescopeSession.enable = true;
+  programs.steam.extest.enable = true;
+  programs.steam.extraCompatPackages = with pkgs; [
+    proton-ge-bin
+  ];
   programs.gamescope.enable = true;
   programs.firejail.enable = true;
 
@@ -229,6 +236,7 @@ in
     wine
     wineasio
     winetricks
+    wineWowPackages.waylandFull
 
     gnome.adwaita-icon-theme
     # gnomeExtensions.appindicator
