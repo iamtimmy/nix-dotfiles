@@ -186,6 +186,9 @@ in
   programs.steam.extraCompatPackages = with pkgs; [
     proton-ge-bin
   ];
+
+  services.flatpak.enable = true;
+  
   programs.gamescope.enable = true;
   programs.firejail.enable = true;
 
@@ -239,7 +242,6 @@ in
     wineWowPackages.waylandFull
 
     gnome.adwaita-icon-theme
-    # gnomeExtensions.appindicator
   ];
 
   environment.sessionVariables = {
