@@ -53,14 +53,12 @@
     # '')
     pkgs.neofetch
     
-    pkgs.bottles
-
     pkgs.telegram-desktop
     pkgs.discord
     pkgs.freetube
     pkgs.tidal-hifi
 
-    pkgs.ungoogled-chromium
+    pkgs.chromium
     pkgs.gpt4all
 
     pkgs.vscodium-fhs
