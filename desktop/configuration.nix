@@ -110,9 +110,28 @@ in
     extraConfig.pipewire."92-low-latency" = {
       context.properties = {
         default.clock.rate = 48000;
-        default.clock.quantum = 32;
+        default.clock.quantum = 64;
         default.clock.min-quantum = 32;
-        default.clock.max-quantum = 32;
+        default.clock.max-quantum = 64;
+      };
+    };
+    extraConfig.pipewire-pulse."92-low-latency" = {
+      context.modules = [
+        {
+          name = "libpipewire-module-protocol-pulse";
+          args = {
+            pulse.min_req = "32/48000";
+            pulse.default.req = "64/48000";
+            pulse.max.req = "64/48000";
+            pulse.min.quantum = "32/48000";
+            pulse.max_quantum = "64/48000";
+          };
+        
+        }
+      ];
+      steam.properties = {
+        node.latency = "64/48000";
+        resample.quality = 1;
       };
     };
   };
