@@ -11,8 +11,11 @@ in
     ];
 
   # Bootloader.
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
   chaotic.scx.enable = true;
+  # chaotic.scx.scheduler = "scx_bpfland";
+  chaotic.scx.scheduler = "scx_lavd";
+
   powerManagement.cpuFreqGovernor = "performance";
   boot.supportedFilesystems = [ "ntfs" ];
 
@@ -199,6 +202,10 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # nixpkgs.config.parsed.cpu = "x86_64-v3";
+  # nixpkgs.config.gcc-arch = "x86_64-v3";
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.cores = 8;
   nix.settings.max-jobs = 3;
@@ -215,8 +222,10 @@ in
   programs.steam.gamescopeSession.enable = true;
   programs.steam.extest.enable = true;
   programs.steam.extraCompatPackages = with pkgs; [
-    proton-ge-bin
+    proton-ge-custom
   ];
+
+  programs.gamemode.enable = true;
 
   services.flatpak.enable = true;
   
@@ -252,7 +261,6 @@ in
     swww
     waybar
     rofi-wayland
-    dolphin
     mako
     hyprshot
     satty
@@ -260,7 +268,8 @@ in
     wl-clip-persist
     cliphist
     libnotify
-    libsForQt5.polkit-kde-agent
+    kdePackages.polkit-kde-agent-1
+    mangohud
 
     xwaylandvideobridge
     pavucontrol
