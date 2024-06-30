@@ -54,6 +54,7 @@
     pkgs.neofetch
     
     pkgs.telegram-desktop
+    pkgs.vesktop
     pkgs.discord
     pkgs.freetube
     pkgs.tidal-hifi
@@ -64,7 +65,6 @@
     pkgs.vscodium-fhs
     pkgs.jetbrains.rider
     pkgs.jetbrains.clion
-    pkgs.jetbrains.idea-community
 
     pkgs.obs-studio
     pkgs.easyeffects
@@ -87,9 +87,19 @@
 
     pkgs.vcpkg
 
-    pkgs.remmina
     pkgs.moonlight-qt
     pkgs.localsend
+
+    (pkgs.retroarch.override {
+      cores = with pkgs.libretro; [
+        mgba
+        melonds
+      ];
+    })
+    pkgs.mgba
+    pkgs.melonDS
+    pkgs.pegasus-frontend
+    pkgs.heroic
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

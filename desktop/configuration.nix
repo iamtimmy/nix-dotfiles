@@ -54,14 +54,27 @@ in
     "kernel.unprivileged_userns_clone" = 1;
   };
   
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    # systemd-boot.enable = true;
+
+    grub = {
+      enable = true;
+      devices = [ "nodev" ];
+      efiSupport = true;
+      useOSProber = true;
+    };
+  };
+
   hardware.cpu.amd.updateMicrocode = true;
 
   boot.initrd.luks.devices."luks-45def02a-8897-4505-8902-8d0f49205a82".device = "/dev/disk/by-uuid/45def02a-8897-4505-8902-8d0f49205a82";
 
   networking.hostName = "desktop";
   networking.networkmanager.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
 
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -139,7 +152,6 @@ in
   # enable 3d acceleration
   hardware.opengl = {
     enable = true;
-    driSupport = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
       vaapiVdpau
@@ -261,6 +273,8 @@ in
     wineWowPackages.waylandFull
 
     gnome.adwaita-icon-theme
+
+    edk2-uefi-shell
   ];
 
   environment.sessionVariables = {
