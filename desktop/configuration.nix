@@ -11,10 +11,10 @@ in
     ];
 
   # Bootloader.
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;
-  # chaotic.scx.scheduler = "scx_bpfland";
-  chaotic.scx.scheduler = "scx_lavd";
+  chaotic.scx.scheduler = "scx_bpfland";
+  # chaotic.scx.scheduler = "scx_lavd";
 
   powerManagement.cpuFreqGovernor = "performance";
   boot.supportedFilesystems = [ "ntfs" ];
@@ -110,7 +110,6 @@ in
   };
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.polkit.enable = true;
@@ -123,33 +122,34 @@ in
     pulse.enable = true;
     jack.enable = true;
     wireplumber.enable = true;
-    extraConfig.pipewire."92-low-latency" = {
-      context.properties = {
-        default.clock.rate = 48000;
-        default.clock.quantum = 64;
-        default.clock.min-quantum = 32;
-        default.clock.max-quantum = 64;
-      };
-    };
-    extraConfig.pipewire-pulse."92-low-latency" = {
-      context.modules = [
-        {
-          name = "libpipewire-module-protocol-pulse";
-          args = {
-            pulse.min_req = "32/48000";
-            pulse.default.req = "64/48000";
-            pulse.max.req = "64/48000";
-            pulse.min.quantum = "32/48000";
-            pulse.max_quantum = "64/48000";
-          };
+
+    # extraConfig.pipewire."92-low-latency" = {
+    #   context.properties = {
+    #     default.clock.rate = 48000;
+    #     default.clock.quantum = 64;
+    #     default.clock.min-quantum = 32;
+    #     default.clock.max-quantum = 64;
+    #   };
+    # };
+    # extraConfig.pipewire-pulse."92-low-latency" = {
+    #   context.modules = [
+    #     {
+    #       name = "libpipewire-module-protocol-pulse";
+    #       args = {
+    #         pulse.min_req = "32/48000";
+    #         pulse.default.req = "64/48000";
+    #         pulse.max.req = "64/48000";
+    #         pulse.min.quantum = "32/48000";
+    #         pulse.max_quantum = "64/48000";
+    #       };
         
-        }
-      ];
-      steam.properties = {
-        node.latency = "64/48000";
-        resample.quality = 1;
-      };
-    };
+    #     }
+    #   ];
+    #   steam.properties = {
+    #     node.latency = "64/48000";
+    #     resample.quality = 1;
+    #   };
+    # };
   };
 
   # enable 3d acceleration
@@ -269,7 +269,8 @@ in
     cliphist
     libnotify
     kdePackages.polkit-kde-agent-1
-    mangohud
+    xorg.xlsclients
+    gnome.adwaita-icon-theme
 
     xwaylandvideobridge
     pavucontrol
@@ -280,10 +281,12 @@ in
     wineasio
     winetricks
     wineWowPackages.waylandFull
+    mangohud
 
-    gnome.adwaita-icon-theme
 
     edk2-uefi-shell
+
+    zed-editor_git
   ];
 
   environment.sessionVariables = {
