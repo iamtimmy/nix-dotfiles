@@ -1,16 +1,16 @@
 { config, pkgs, inputs, ... }:
 
 let
-  tokyo-night-sddm = pkgs.libsForQt5.callPackage ./tokyo-night-sddm.nix {};
+  example = false;
 in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
     ];
 
   # Bootloader.
+  boot.tmp.cleanOnBoot = true;
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   chaotic.scx.enable = true;
   chaotic.scx.scheduler = "scx_bpfland";
@@ -30,13 +30,6 @@ in
     "sdn-aloop"
   ];
 
-  boot.initrd.kernelModules = [
-    "nvidia"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nvidia_drm"
-  ];
-
   boot.extraModprobeConfig = ''
     # https://github.com/umlaeute/v4l2loopback
     options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
@@ -45,10 +38,12 @@ in
   boot.kernelParams = [
     "amd_iommu=on"
     "iommu=pt"
-    "nvidia_drm.modeset=1"
   ];
 
+  boot.initrd.kernelModules = [ "nvidia" ];
+
   boot.blacklistedKernelModules = [
+    "nouveau"
     "amdgpu"
     "snd_hda_intel"
   ];
@@ -66,6 +61,7 @@ in
       devices = [ "nodev" ];
       efiSupport = true;
       useOSProber = true;
+      configurationLimit = 3;
     };
   };
 
@@ -82,20 +78,24 @@ in
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      sddm = {
-        enable = true;
-        theme = "tokyo-night-sddm";
-        wayland.enable = true;
-      };
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      wayland.enable = true;
     };
-    desktopManager.gnome.enable = true;
   };
 
-  programs.dconf.enable = true;
-  
+  services.desktopManager = {
+    plasma6.enable = true;
+    plasma6.enableQt5Integration = true;
+  };
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    konsole
+    elisa
+    kate
+  ];
+
   xdg = {
     sounds.enable = true;
     portal.enable = true;
@@ -153,21 +153,34 @@ in
   };
 
   # enable 3d acceleration
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
-      vaapiVdpau
+      obs-studio-plugins.obs-vaapi
+      rocm-opencl-icd
+      rocm-opencl-runtime
+      nvidia-vaapi-driver
+      libva-vdpau-driver
       libvdpau-va-gl
+      vaapiVdpau
+    ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      nvidia-vaapi-driver
+      libva-vdpau-driver
+      libvdpau-va-gl
+      vaapiVdpau
     ];
   };
   
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.nvidia.nvidiaSettings = true;
-  hardware.nvidia.powerManagement.enable = false;
-  hardware.nvidia.powerManagement.finegrained = false;
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.open = false;
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    nvidiaSettings = true;
+    open = true;
+  };
 
   # mouse config service
   services.ratbagd.enable = true;
@@ -188,9 +201,6 @@ in
       "pipewire"
       "adbusers"
     ];
-    packages = with pkgs; [
-      firefox
-    ];
   };
 
   home-manager = {
@@ -203,12 +213,9 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # nixpkgs.config.parsed.cpu = "x86_64-v3";
-  # nixpkgs.config.gcc-arch = "x86_64-v3";
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.cores = 8;
-  nix.settings.max-jobs = 3;
+  # nix.settings.cores = 8;
+  # nix.settings.max-jobs = 3;
 
   programs.virt-manager.enable = true;
   programs.adb.enable = true;
@@ -246,6 +253,8 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    firefox_nightly
+
     kitty
     helix
     git
@@ -254,9 +263,6 @@ in
     ripgrep
     lshw
     pciutils
-
-    # sddm theme
-    tokyo-night-sddm
 
     swww
     waybar
@@ -270,7 +276,6 @@ in
     libnotify
     kdePackages.polkit-kde-agent-1
     xorg.xlsclients
-    gnome.adwaita-icon-theme
 
     xwaylandvideobridge
     pavucontrol
@@ -282,7 +287,6 @@ in
     winetricks
     wineWowPackages.waylandFull
     mangohud
-
 
     edk2-uefi-shell
 
@@ -307,6 +311,8 @@ in
 
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
   };
 
   services.power-profiles-daemon.enable = true;
@@ -314,7 +320,7 @@ in
   services.gvfs.enable = true;
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       fira
       (nerdfonts.override {
         fonts = [

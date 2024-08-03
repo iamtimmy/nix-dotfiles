@@ -11,12 +11,12 @@
 
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
 
-  # home.pointerCursor = {
-  #   gtk.enable = true;
-  #   package = pkgs.bibata-cursors;
-  #   name = "Bibata-Modern-Classic";
-  #   size = 12;
-  # };
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.vanilla-dmz;
+    name = "DMZ-White";
+    size = 16;
+  };
 
   dconf = {
     enable = true;
@@ -39,19 +39,8 @@
   # };
 
   home.packages = [
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-    pkgs.neofetch
+    pkgs.cpufetch
+    pkgs.fastfetch
     
     pkgs.telegram-desktop
     pkgs.vesktop
@@ -84,8 +73,6 @@
     pkgs.nil
     pkgs.zls
     pkgs.lua-language-server
-
-    pkgs.vcpkg
 
     pkgs.moonlight-qt
     pkgs.localsend
@@ -139,6 +126,8 @@
 
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;
+  # nix.package = pkgs.nix;
+  # chaotic.nyx.overlay.onTopOf = "user-pkgs";
   home.username = "user";
   home.homeDirectory = "/home/user";
   home.stateVersion = "24.05";

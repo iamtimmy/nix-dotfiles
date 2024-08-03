@@ -25,14 +25,15 @@
       desktop = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;};
         modules = [
-          inputs.home-manager.nixosModules.default
           inputs.hyprland.nixosModules.default
-          inputs.chaotic.nixosModules.default
+          inputs.home-manager.nixosModules.default
+          # inputs.chaotic.homeManagerModules.default
           {
             environment.systemPackages = [
               inputs.ghostty.packages.x86_64-linux.default
             ];
           }
+          inputs.chaotic.nixosModules.default
           ./desktop/configuration.nix
         ];
       };
