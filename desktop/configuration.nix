@@ -11,9 +11,15 @@ in
 
   # Bootloader.
   boot.tmp.cleanOnBoot = true;
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  chaotic.scx.enable = true;
-  chaotic.scx.scheduler = "scx_bpfland";
+
+  # cachy os as a default kernel is a good idea, I'm going with cachyos lto, because I like clang
+  # boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+
+  # sched-ext is really not mature enough to be running very dynamic desktop workloads (yet)
+  # The main goal of the project for now seems to be to study schedulers and what works best in the first place
+  # chaotic.scx.enable = true;
+  # chaotic.scx.scheduler = "scx_bpfland";
   # chaotic.scx.scheduler = "scx_lavd";
 
   powerManagement.cpuFreqGovernor = "performance";
@@ -83,18 +89,31 @@ in
       enable = true;
       wayland.enable = true;
     };
+
+    defaultSession = "hyprland";
   };
 
-  services.desktopManager = {
-    plasma6.enable = true;
-    plasma6.enableQt5Integration = true;
+  services.xserver = {
+    enable = true;
+    desktopManager = {
+      xterm.enable = false;
+      xfce.enable = true;
+    };
   };
 
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    konsole
-    elisa
-    kate
-  ];
+  services.libinput.mouse = {
+    accelProfile = "flat";
+  };
+
+  # services.desktopManager = {
+  #   plasma6.enable = true;
+  # };
+
+  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
+  #   konsole
+  #   elisa
+  #   kate
+  # ];
 
   xdg = {
     sounds.enable = true;
@@ -110,46 +129,79 @@ in
   };
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   security.polkit.enable = true;
 
   services.pipewire = {
     enable = true;
-    systemWide = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
-    wireplumber.enable = true;
+    # systemWide = true;
 
-    # extraConfig.pipewire."92-low-latency" = {
-    #   context.properties = {
-    #     default.clock.rate = 48000;
-    #     default.clock.quantum = 64;
-    #     default.clock.min-quantum = 32;
-    #     default.clock.max-quantum = 64;
-    #   };
-    # };
-    # extraConfig.pipewire-pulse."92-low-latency" = {
-    #   context.modules = [
-    #     {
-    #       name = "libpipewire-module-protocol-pulse";
-    #       args = {
-    #         pulse.min_req = "32/48000";
-    #         pulse.default.req = "64/48000";
-    #         pulse.max.req = "64/48000";
-    #         pulse.min.quantum = "32/48000";
-    #         pulse.max_quantum = "64/48000";
-    #       };
-        
-    #     }
-    #   ];
-    #   steam.properties = {
-    #     node.latency = "64/48000";
-    #     resample.quality = 1;
-    #   };
-    # };
+    extraConfig.pipewire."92-low-latency" = {
+      context.properties = {
+        default.clock.allowed-rates = [ 48000 96000 192000 ];
+        default.clock.rate = 192000;
+        default.clock.quantum = 256;
+        default.clock.min-quantum = 32;
+        default.clock.max-quantum = 2048;
+      };
+    };
+    extraConfig.pipewire-pulse."92-low-latency" = {
+      context.modules = [
+        {
+          name = "libpipewire-module-protocol-pulse";
+          args = {
+            pulse.min.req = "32/192000";
+            pulse.default.req = "256/192000";
+            pulse.max.req = "2048/192000";
+            pulse.min.quantum = "32/192000";
+            pulse.max.quantum = "2048/192000";
+          };
+        }
+      ];
+      stream.properties = {
+        node.latency = "256/192000";
+        resample.quality = 1;
+      };
+    };
+
+    extraConfig.pipewire."91-null-sinks" = {
+      "context.objects" = [
+        {
+          # A default dummy driver. This handles nodes marked with the "node.always-driver"
+          # properyty when no other driver is currently active. JACK clients need this.
+          factory = "spa-node-factory";
+          args = {
+            "factory.name"     = "support.node.driver";
+            "node.name"        = "Dummy-Driver";
+            "priority.driver"  = 8000;
+          };
+        }
+        {
+          factory = "adapter";
+          args = {
+            "factory.name"     = "support.null-audio-sink";
+            "node.name"        = "Microphone-Proxy";
+            "node.description" = "Microphone";
+            "media.class"      = "Audio/Source/Virtual";
+            "audio.position"   = "MONO";
+          };
+        }
+        {
+          factory = "adapter";
+          args = {
+            "factory.name"     = "support.null-audio-sink";
+            "node.name"        = "Main-Output-Proxy";
+            "node.description" = "Main Output";
+            "media.class"      = "Audio/Sink";
+            "audio.position"   = "FL,FR";
+          };
+        }
+      ];
+    };
   };
 
   # enable 3d acceleration
@@ -180,6 +232,7 @@ in
     powerManagement.finegrained = false;
     nvidiaSettings = true;
     open = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # mouse config service
@@ -253,16 +306,13 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    firefox_nightly
-
-    kitty
     helix
     git
     gh
-    lf
     ripgrep
     lshw
     pciutils
+    fastfetch
 
     swww
     waybar
@@ -288,9 +338,28 @@ in
     wineWowPackages.waylandFull
     mangohud
 
+    git-lfs
+    unzip
+    gnumake
+    cmake
+    ninja
+    clang
+    llvmPackages_latest.llvm
+    mono
+    python3
+    zig
+    luajit
     edk2-uefi-shell
 
+    obs-studio
+
+    kitty
+    jetbrains.rider
+    jetbrains.clion
     zed-editor_git
+    firefox_nightly
+    chromium
+    discord-krisp
   ];
 
   environment.sessionVariables = {

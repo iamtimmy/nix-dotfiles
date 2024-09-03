@@ -39,53 +39,21 @@
   # };
 
   home.packages = [
-    pkgs.cpufetch
-    pkgs.fastfetch
-    
     pkgs.telegram-desktop
-    pkgs.vesktop
-    pkgs.discord
     pkgs.freetube
     pkgs.tidal-hifi
 
     pkgs.chromium
     pkgs.gpt4all
 
-    pkgs.vscodium-fhs
-    pkgs.jetbrains.rider
-    pkgs.jetbrains.clion
-
-    pkgs.obs-studio
-    pkgs.easyeffects
-
-    pkgs.git-lfs
-    pkgs.unzip
-    pkgs.gnumake
-    pkgs.cmake
-    pkgs.ninja
-    pkgs.clang
-    pkgs.llvmPackages_latest.llvm
-    pkgs.mono
-    pkgs.python3
-    pkgs.zig
-    pkgs.luajit
-
     pkgs.nil
     pkgs.zls
     pkgs.lua-language-server
 
-    pkgs.moonlight-qt
     pkgs.localsend
 
-    (pkgs.retroarch.override {
-      cores = with pkgs.libretro; [
-        mgba
-        melonds
-      ];
-    })
     pkgs.mgba
     pkgs.melonDS
-    pkgs.pegasus-frontend
     pkgs.heroic
   ];
 
