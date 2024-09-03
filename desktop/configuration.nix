@@ -209,9 +209,9 @@ in
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      obs-studio-plugins.obs-vaapi
-      rocm-opencl-icd
-      rocm-opencl-runtime
+      # obs-studio-plugins.obs-vaapi
+      # rocm-opencl-icd
+      # rocm-opencl-runtime
       nvidia-vaapi-driver
       libva-vdpau-driver
       libvdpau-va-gl
@@ -281,11 +281,11 @@ in
   programs.steam.protontricks.enable = true;
   programs.steam.gamescopeSession.enable = true;
   programs.steam.extest.enable = true;
-  programs.steam.extraCompatPackages = with pkgs; [
-    proton-ge-custom
-  ];
+  # programs.steam.extraCompatPackages = with pkgs; [
+  #   proton-ge-custom
+  # ];
 
-  programs.gamemode.enable = true;
+  # programs.gamemode.enable = true;
 
   services.flatpak.enable = true;
   
@@ -324,7 +324,6 @@ in
     wl-clip-persist
     cliphist
     libnotify
-    kdePackages.polkit-kde-agent-1
     xorg.xlsclients
 
     xwaylandvideobridge
@@ -357,7 +356,7 @@ in
     jetbrains.rider
     jetbrains.clion
     zed-editor_git
-    firefox_nightly
+    firefox
     chromium
     discord-krisp
   ];

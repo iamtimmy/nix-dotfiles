@@ -1,49 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  programs.neovim = {
-    enable = true;
-
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-  };
-
   wayland.windowManager.hyprland.systemd.variables = ["--all"];
-
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.vanilla-dmz;
-    name = "DMZ-White";
-    size = 16;
-  };
-
-  dconf = {
-    enable = true;
-    settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-  };
-
-  # qt = {
-  #   enable = true;
-  #   platformTheme = "qtct";
-  #   style.name = "kvantum";
-  # };
-
-  # xdg.configFile = {
-  #   "Kvantum/kvantum.kvconfig".text = ''
-  #     [General]
-  #     theme=GraphiteNordDark
-  #   '';
-
-  #   "Kvantum/GraphiteNord".source = "${pkgs.graphite-kde-theme}/share/Kvantum/GraphiteNord";
-  # };
 
   home.packages = [
     pkgs.telegram-desktop
     pkgs.freetube
     pkgs.tidal-hifi
 
-    pkgs.chromium
     pkgs.gpt4all
 
     pkgs.nil
