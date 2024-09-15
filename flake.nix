@@ -15,6 +15,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rose-pine-hyprcursor = {
+      url = "github:ndom91/rose-pine-hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ghostty = {
       url = "git+ssh://git@github.com/ghostty-org/ghostty";
     };
@@ -31,6 +36,7 @@
           {
             environment.systemPackages = [
               inputs.ghostty.packages.x86_64-linux.default
+              inputs.rose-pine-hyprcursor.packages.x86_64-linux.default
             ];
           }
           inputs.chaotic.nixosModules.default

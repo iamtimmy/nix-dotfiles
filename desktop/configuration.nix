@@ -13,8 +13,8 @@ in
   boot.tmp.cleanOnBoot = true;
 
   # cachy os as a default kernel is a good idea, I'm going with cachyos lto, because I like clang
-  # boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
   # sched-ext is really not mature enough to be running very dynamic desktop workloads (yet)
   # The main goal of the project for now seems to be to study schedulers and what works best in the first place
