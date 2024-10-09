@@ -308,6 +308,7 @@ in
   environment.systemPackages = with pkgs; [
     helix
     git
+    lazygit
     gh
     ripgrep
     lshw
