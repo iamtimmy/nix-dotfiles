@@ -20,9 +20,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ghostty = {
-      url = "git+ssh://git@github.com/ghostty-org/ghostty";
-    };
+    # ghostty = {
+    #   url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    # };
   };
 
   outputs = { self, nixpkgs, ... }@inputs: {
@@ -35,7 +35,7 @@
           # inputs.chaotic.homeManagerModules.default
           {
             environment.systemPackages = [
-              inputs.ghostty.packages.x86_64-linux.default
+              # inputs.ghostty.packages.x86_64-linux.default
               inputs.rose-pine-hyprcursor.packages.x86_64-linux.default
             ];
           }

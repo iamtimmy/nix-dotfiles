@@ -13,7 +13,7 @@ in
   boot.tmp.cleanOnBoot = true;
 
   # cachy os as a default kernel is a good idea, I'm going with cachyos lto, because I like clang
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  # boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
   # sched-ext is really not mature enough to be running very dynamic desktop workloads (yet)
@@ -22,7 +22,7 @@ in
   # chaotic.scx.scheduler = "scx_bpfland";
   # chaotic.scx.scheduler = "scx_lavd";
 
-  powerManagement.cpuFreqGovernor = "performance";
+  # powerManagement.cpuFreqGovernor = "performance";
   boot.supportedFilesystems = [ "ntfs" ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
@@ -48,15 +48,9 @@ in
 
   boot.initrd.kernelModules = [ "nvidia" ];
 
-  boot.blacklistedKernelModules = [
-    "nouveau"
-    "amdgpu"
-    "snd_hda_intel"
-  ];
-
-  boot.kernel.sysctl = {
-    "kernel.unprivileged_userns_clone" = 1;
-  };
+  # boot.kernel.sysctl = {
+  #   "kernel.unprivileged_userns_clone" = 1;
+  # };
   
   boot.loader = {
     efi.canTouchEfiVariables = true;
@@ -228,8 +222,8 @@ in
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
+    # powerManagement.enable = false;
+    # powerManagement.finegrained = false;
     nvidiaSettings = true;
     open = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -278,9 +272,10 @@ in
   # programs.hyprland.package = pkgs.hyprland.override { debug = true; };
 
   programs.steam.enable = true;
-  programs.steam.protontricks.enable = true;
-  programs.steam.gamescopeSession.enable = true;
   programs.steam.extest.enable = true;
+  programs.steam.protontricks.enable = true;
+
+  # programs.steam.gamescopeSession.enable = true;
   # programs.steam.extraCompatPackages = with pkgs; [
   #   proton-ge-custom
   # ];
@@ -384,7 +379,7 @@ in
     MOZ_DISABLE_RDD_SANDBOX = "1";
   };
 
-  services.power-profiles-daemon.enable = true;
+  # services.power-profiles-daemon.enable = true;
   services.dbus.enable = true;
   services.gvfs.enable = true;
 
