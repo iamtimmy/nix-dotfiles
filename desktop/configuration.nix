@@ -280,7 +280,7 @@ in
 
   # programs.gamemode.enable = true;
 
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
   
   programs.gamescope.enable = true;
   programs.firejail.enable = true;
@@ -323,7 +323,9 @@ in
     xwaylandvideobridge
     pavucontrol
     helvum
+    easyeffects
 
+    bottles
     steam-run
     wine
     wineasio
@@ -352,8 +354,20 @@ in
     zed-editor_git
     firefox
     chromium
-    discord-krisp
+    vesktop
   ];
+
+  # programs.nix-ld = {
+  #   enable = true;
+  #   libraries = with pkgs; [
+  #     openssl
+  #     libGL
+  #     glibc
+  #     glib
+  #     xorg.libxcb
+  #     libsForQt5.qt5.qtbase
+  #   ];
+  # };
 
   environment.sessionVariables = {
     FLAKE = "$HOME/dotfiles";
