@@ -351,6 +351,7 @@ in
     kitty
     jetbrains.rider
     jetbrains.clion
+    jetbrains.pycharm-professional
     zed-editor_git
     firefox
     chromium
