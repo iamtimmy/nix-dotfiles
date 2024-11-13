@@ -302,11 +302,12 @@ in
     helix
     git
     lazygit
-    gh
+    fastfetch
     ripgrep
+
+    gh
     lshw
     pciutils
-    fastfetch
 
     swww
     waybar

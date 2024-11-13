@@ -36,6 +36,13 @@
           ./desktop/configuration.nix
         ];
       };
+
+      server = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./server/configuration.nix
+        ];
+      };
     };
   };
 }
