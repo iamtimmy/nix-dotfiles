@@ -16,8 +16,8 @@ in
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
 
-  chaotic.scx.enable = true;
-  chaotic.scx.scheduler = "scx_lavd";
+  # chaotic.scx.enable = true;
+  # chaotic.scx.scheduler = "scx_lavd";
   # chaotic.scx.scheduler = "scx_bpfland";
 
   # powerManagement.cpuFreqGovernor = "performance";
@@ -76,22 +76,22 @@ in
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
+  # services.displayManager = {
+  #   sddm = {
+  #     enable = true;
+  #     wayland.enable = true;
+  #   };
 
-    defaultSession = "hyprland";
-  };
+  #   defaultSession = "hyprland";
+  # };
 
-  services.xserver = {
-    enable = true;
-    desktopManager = {
-      xterm.enable = false;
-      xfce.enable = true;
-    };
-  };
+  # services.xserver = {
+  #   enable = true;
+  #   desktopManager = {
+  #     xterm.enable = false;
+  #     xfce.enable = true;
+  #   };
+  # };
 
   # services.libinput.mouse = {
   #   accelProfile = "flat";
@@ -220,8 +220,6 @@ in
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     modesetting.enable = true;
-    # powerManagement.enable = false;
-    # powerManagement.finegrained = false;
     nvidiaSettings = true;
     open = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -259,8 +257,6 @@ in
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # nix.settings.cores = 8;
-  # nix.settings.max-jobs = 3;
 
   programs.virt-manager.enable = true;
   programs.adb.enable = true;
@@ -350,12 +346,9 @@ in
     obs-studio
 
     kitty
-    jetbrains.rider
     jetbrains.clion
-    jetbrains.pycharm-professional
     zed-editor_git
     firefox
-    chromium
     vesktop
   ];
 
@@ -406,7 +399,7 @@ in
         ];
       })
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
     ];
 

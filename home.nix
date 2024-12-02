@@ -12,15 +12,14 @@
 
     pkgs.qbittorrent
 
-    pkgs.nil
+    pkgs.nixd
     pkgs.zls
     pkgs.lua-language-server
 
     pkgs.localsend
 
-    pkgs.mgba
-    pkgs.melonDS
-    # pkgs.heroic
+    # pkgs.mgba
+    # pkgs.melonDS
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
