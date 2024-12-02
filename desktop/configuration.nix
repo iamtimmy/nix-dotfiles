@@ -44,7 +44,8 @@ in
     "iommu=pt"
   ];
 
-  boot.initrd.kernelModules = [ "nvidia" ];
+  # boot.initrd.kernelModules = [ "nvidia" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
   # boot.kernel.sysctl = {
   #   "kernel.unprivileged_userns_clone" = 1;
@@ -204,26 +205,26 @@ in
       # obs-studio-plugins.obs-vaapi
       # rocm-opencl-icd
       # rocm-opencl-runtime
-      nvidia-vaapi-driver
+      # nvidia-vaapi-driver
       libva-vdpau-driver
       libvdpau-va-gl
       vaapiVdpau
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
-      nvidia-vaapi-driver
+      # nvidia-vaapi-driver
       libva-vdpau-driver
       libvdpau-va-gl
       vaapiVdpau
     ];
   };
   
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    modesetting.enable = true;
-    nvidiaSettings = true;
-    open = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
+  services.xserver.videoDrivers = [ "amdgpu" ];
+  # hardware.nvidia = {
+  #   modesetting.enable = true;
+  #   nvidiaSettings = true;
+  #   open = true;
+  #   package = config.boot.kernelPackages.nvidiaPackages.stable;
+  # };
 
   # mouse config service
   services.ratbagd.enable = true;
@@ -374,9 +375,9 @@ in
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
 
-    LIBVA_DRIVER_NAME = "nvidia";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_TYPE_LIBRARY_NAME = "nvidia";
+    # LIBVA_DRIVER_NAME = "nvidia";
+    # GBM_BACKEND = "nvidia-drm";
+    # __GLX_VENDOR_TYPE_LIBRARY_NAME = "nvidia";
     __GL_GSYNC_ALLOWED = "0";
     __GL_VRR_ALLOWED = "0";
 
@@ -393,11 +394,7 @@ in
   fonts = {
     packages = with pkgs; [
       fira
-      (nerdfonts.override {
-        fonts = [
-          "JetBrainsMono"
-        ];
-      })
+      nerd-fonts.jetbrains-mono
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
