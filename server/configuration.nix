@@ -10,7 +10,7 @@
   # boot.loader.systemd-boot.enable = true;
   # boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
-  boot.loader.efiSupport = true;
+  boot.loader.grub.efiSupport = true;
   boot.loader.grub.efiInstallAsRemovable = true;
 
   networking.hostName = "server";
@@ -61,11 +61,6 @@
   virtualisation.podman.enable = true;
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
-
-  # virtualisation.docker.rootless = {
-  #   enable = true;
-  #   setSocketVariable = true;
-  # };
 
   programs.firejail.enable = true;
 
