@@ -37,6 +37,9 @@
     fastfetch
     ripgrep
     unzip
+
+    arion
+    docker-client
   ];
 
   programs.nh = {
@@ -49,6 +52,16 @@
     enable = true;
     lfs.enable = true;
   };
+
+  virtualisation.docker.enable = false;
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerSocket.enable = true;
+  virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+
+  # virtualisation.docker.rootless = {
+  #   enable = true;
+  #   setSocketVariable = true;
+  # };
 
   programs.firejail.enable = true;
 
@@ -64,9 +77,59 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.netbird.enable = true;
+
+  services.glance = {
+    enable = true;
+    settings.server.port = 8069;
+    settings.server.host = "0.0.0.0";
+    openFirewall = true;
+
+    settings.pages = [
+      {
+        columns = [
+          {
+            size = "small";
+            widgets = [
+              {
+                type = "markets";
+                title = "Indices";
+                markets = [
+                  {
+                    symbol = "SPY";
+                    name = "S&P 500";
+                  }
+                  {
+                    symbol = "DX-Y.NYB";
+                    name = "Dollar Index";
+                  }
+                ];
+              }
+            ];
+          }
+          {
+            size = "full";
+            widgets = [
+              {
+                type = "videos";
+                style = "grid-cards";
+                collapse-after-rows = 3;
+                channels = [
+                  "UCvSXMi2LebwJEM1s4bz5IBA"
+                  "UCV6KDgJskWaEckne5aPA0aQ"
+                  "UCAzhpt9DmG6PnHXjmJTvRGQ"
+                ];
+              }
+            ];
+          }
+        ];
+        name = "Home";
+      }
+    ];
+  };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedTCPPorts = [ 8069 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
   # Copy the NixOS configuration file and link it from the resulting system
