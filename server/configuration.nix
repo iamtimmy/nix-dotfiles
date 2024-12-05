@@ -4,10 +4,14 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./disko-config.nix
     ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
 
   networking.hostName = "server";
   time.timeZone = "Europe/Amsterdam";

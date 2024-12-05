@@ -15,6 +15,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # ghostty = {
     #   url = "git+ssh://git@github.com/ghostty-org/ghostty";
     # };
@@ -41,6 +46,7 @@
         specialArgs = {inherit inputs;};
         modules = [
           ./server/configuration.nix
+          inputs.disko.nixosModules.disko
         ];
       };
     };
