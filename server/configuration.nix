@@ -1,11 +1,15 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./disko-config.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./disko-config.nix
+  ];
 
   # boot.loader.systemd-boot.enable = true;
   # boot.loader.efi.canTouchEfiVariables = true;
@@ -20,7 +24,7 @@
     user = {
       isNormalUser = true;
       extraGroups = [ "wheel" ];
-      packages = with pkgs; [];
+      packages = with pkgs; [ ];
       openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8oe45z5nAxfwouyxTm1HAUGkXBVeb/CS4HEwel1kdcEqNlOy1RC5kJu41u7hzT+pBUE7B7/f94k80jp6Bl0+iGT/7xRqlkdABAKxVY/A/vhXxjZhOzUOMKhMswHOoNOGINvq6v43RXAwmbqkd8Zb2xp27HB3XEwFiPHrUhh9DYN+i0RpJI9lzvQE0MP3W9HMmClLdB6JG8x1lQOpgIQ2aYGX9B/qKqH+j7UNdyJHlUxF5xuIVoOjI7VU0oa7UzpytdZbkQYS3taj1da5rqL87RtG/5FQ9vEFMFWUJ3EW1T8lFTfndVvjRgOSnDUS54pa2j24Hm8hAsU3qg/frns4qReYjtb2PyYdH73S8lzmhEGdXNOGmoyotr1+8UcBj4yyWOVbx30U+npEhcLr700nuN3jgH/3UXPy69UujcJ/wLAy+9jYU1UO3hP79kKszwP1SQxOTvQtMO9hDVlmbewxu9YX3S25v4a7nLgK3J/mDiN1ma3n/OY9e8SQOJBiMiz8= user@desktop"
       ];
@@ -32,7 +36,10 @@
   };
 
   # nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   environment.systemPackages = with pkgs; [
     helix

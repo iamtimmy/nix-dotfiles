@@ -25,30 +25,32 @@
     # };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: {
-    nixosConfigurations = {
-      desktop = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules = [
-          inputs.home-manager.nixosModules.default
-          {
-            environment.systemPackages = [
-              # inputs.ghostty.packages.x86_64-linux.default
-              inputs.rose-pine-hyprcursor.packages.x86_64-linux.default
-            ];
-          }
-          inputs.chaotic.nixosModules.default
-          ./desktop/configuration.nix
-        ];
-      };
+  outputs =
+    { self, nixpkgs, ... }@inputs:
+    {
+      nixosConfigurations = {
+        desktop = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            inputs.home-manager.nixosModules.default
+            {
+              environment.systemPackages = [
+                # inputs.ghostty.packages.x86_64-linux.default
+                inputs.rose-pine-hyprcursor.packages.x86_64-linux.default
+              ];
+            }
+            inputs.chaotic.nixosModules.default
+            ./desktop/configuration.nix
+          ];
+        };
 
-      server = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./server/configuration.nix
-          inputs.disko.nixosModules.disko
-        ];
+        server = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./server/configuration.nix
+            inputs.disko.nixosModules.disko
+          ];
+        };
       };
     };
-  };
 }

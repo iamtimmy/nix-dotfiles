@@ -1,14 +1,18 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
+  imports = [
+    ./hardware-configuration.nix
 
-      ../modules/amd-gpu.nix
-      ../modules/wayland.nix
-      ../modules/hyprland.nix
-    ];
+    ../modules/amd-gpu.nix
+    ../modules/wayland.nix
+    ../modules/hyprland.nix
+  ];
 
   # Kernel and Bootloader options
   boot.loader = {
@@ -24,7 +28,7 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  
+
   boot.tmp.cleanOnBoot = true;
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -50,12 +54,7 @@
     options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
   '';
 
-
-
   hardware.cpu.amd.updateMicrocode = true;
-
-
-
 
   networking.hostName = "desktop";
   networking.networkmanager.enable = true;
@@ -120,7 +119,11 @@
 
     extraConfig.pipewire."92-low-latency" = {
       context.properties = {
-        default.clock.allowed-rates = [ 48000 96000 192000 ];
+        default.clock.allowed-rates = [
+          48000
+          96000
+          192000
+        ];
         default.clock.rate = 192000;
         default.clock.quantum = 256;
         default.clock.min-quantum = 32;
@@ -153,35 +156,35 @@
           # properyty when no other driver is currently active. JACK clients need this.
           factory = "spa-node-factory";
           args = {
-            "factory.name"     = "support.node.driver";
-            "node.name"        = "Dummy-Driver";
-            "priority.driver"  = 8000;
+            "factory.name" = "support.node.driver";
+            "node.name" = "Dummy-Driver";
+            "priority.driver" = 8000;
           };
         }
         {
           factory = "adapter";
           args = {
-            "factory.name"     = "support.null-audio-sink";
-            "node.name"        = "Microphone-Proxy";
+            "factory.name" = "support.null-audio-sink";
+            "node.name" = "Microphone-Proxy";
             "node.description" = "Microphone";
-            "media.class"      = "Audio/Source/Virtual";
-            "audio.position"   = "MONO";
+            "media.class" = "Audio/Source/Virtual";
+            "audio.position" = "MONO";
           };
         }
         {
           factory = "adapter";
           args = {
-            "factory.name"     = "support.null-audio-sink";
-            "node.name"        = "Main-Output-Proxy";
+            "factory.name" = "support.null-audio-sink";
+            "node.name" = "Main-Output-Proxy";
             "node.description" = "Main Output";
-            "media.class"      = "Audio/Sink";
-            "audio.position"   = "FL,FR";
+            "media.class" = "Audio/Sink";
+            "audio.position" = "FL,FR";
           };
         }
       ];
     };
   };
-  
+
   # mouse config service
   services.ratbagd.enable = true;
 
@@ -215,7 +218,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   programs.virt-manager.enable = true;
@@ -232,7 +238,7 @@
   # programs.gamemode.enable = true;
 
   # services.flatpak.enable = true;
-  
+
   programs.gamescope.enable = true;
   programs.firejail.enable = true;
 
@@ -341,10 +347,19 @@
     fontconfig = {
       cache32Bit = true;
       defaultFonts = {
-        emoji = ["Noto Color Emoji"];
-        monospace = [ "JetBrains Mono Nerd Font" "Noto Fonts Emoji" ];
-        sansSerif = [ "Fira" "Noto Fonts Emoji" ];
-        serif = [ "Fira" "Noto Fonts Emoji" ];
+        emoji = [ "Noto Color Emoji" ];
+        monospace = [
+          "JetBrains Mono Nerd Font"
+          "Noto Fonts Emoji"
+        ];
+        sansSerif = [
+          "Fira"
+          "Noto Fonts Emoji"
+        ];
+        serif = [
+          "Fira"
+          "Noto Fonts Emoji"
+        ];
       };
       enable = true;
     };
