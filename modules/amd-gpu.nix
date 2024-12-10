@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.amd-gpu;
+  cfg = config.amd-gpu-config;
 in
 {
-  options.amd-gpu = {
+  options.amd-gpu-config = {
     enable = mkEnableOption "Configure nixos system to support and early load amd GPU Drivers";
   };
 

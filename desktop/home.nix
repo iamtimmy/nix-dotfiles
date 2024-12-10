@@ -1,31 +1,27 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  wayland.windowManager.hyprland.systemd.variables = ["--all"];
+  imports = [
+    ../hm-modules/wayland.nix
+    ../hm-modules/hyprland.nix
+    ../hm-modules/helix.nix
+  ];
 
-  home.packages = [
-    pkgs.telegram-desktop
-    pkgs.freetube
-    pkgs.tidal-hifi
+  home.packages = with pkgs; [
+    telegram-desktop
+    freetube
+    tidal-hifi
 
-    pkgs.gpt4all
+    gpt4all
 
-    pkgs.qbittorrent
+    qbittorrent
 
-    pkgs.nil
-    pkgs.nixd
-    pkgs.zls
-    pkgs.lua-language-server
-
-    pkgs.localsend
-
-    # pkgs.mgba
-    # pkgs.melonDS
+    localsend
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = {
+  # home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -36,7 +32,7 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
-  };
+  # };
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
@@ -54,15 +50,16 @@
   #
   #  /etc/profiles/per-user/user/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    EDITOR = "hx";
-  };
+  # home.sessionVariables = {
+  #   EDITOR = "hx";
+  # };
+
+  nixpkgs.config.allowUnfree = true;
 
   programs.home-manager.enable = true;
-  nixpkgs.config.allowUnfree = true;
-  # nix.package = pkgs.nix;
-  # chaotic.nyx.overlay.onTopOf = "user-pkgs";
+
   home.username = "user";
   home.homeDirectory = "/home/user";
+
   home.stateVersion = "24.05";
 }

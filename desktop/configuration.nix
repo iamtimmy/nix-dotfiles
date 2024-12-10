@@ -1,28 +1,38 @@
 { config, pkgs, inputs, ... }:
 
-let
-  example = false;
-in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
+
       ../modules/amd-gpu.nix
+      ../modules/wayland.nix
+      ../modules/hyprland.nix
     ];
 
-  # Bootloader.
+  # Kernel and Bootloader options
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+
+    grub = {
+      enable = true;
+      devices = [ "nodev" ];
+      efiSupport = true;
+      useOSProber = true;
+      configurationLimit = 3;
+    };
+  };
+
+  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  
   boot.tmp.cleanOnBoot = true;
 
-  # cachy os as a default kernel is a good idea, I'm going with cachyos lto, because I like clang
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
-  # boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
-
-  # chaotic.scx.enable = true;
-  # chaotic.scx.scheduler = "scx_lavd";
-  # chaotic.scx.scheduler = "scx_bpfland";
-
-  # powerManagement.cpuFreqGovernor = "performance";
   boot.supportedFilesystems = [ "ntfs" ];
+
+  boot.kernelParams = [
+    "amd_iommu=on"
+    "iommu=pt"
+  ];
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback.out
@@ -40,30 +50,16 @@ in
     options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
   '';
 
-  boot.kernelParams = [
-    "amd_iommu=on"
-    "iommu=pt"
-  ];
 
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    # systemd-boot.enable = true;
-
-    grub = {
-      enable = true;
-      devices = [ "nodev" ];
-      efiSupport = true;
-      useOSProber = true;
-      configurationLimit = 3;
-    };
-  };
 
   hardware.cpu.amd.updateMicrocode = true;
 
-  boot.initrd.luks.devices."luks-45def02a-8897-4505-8902-8d0f49205a82".device = "/dev/disk/by-uuid/45def02a-8897-4505-8902-8d0f49205a82";
+
+
 
   networking.hostName = "desktop";
   networking.networkmanager.enable = true;
+
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
@@ -71,6 +67,10 @@ in
   time.hardwareClockInLocalTime = true;
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_US.UTF-8";
+
+  amd-gpu-config.enable = true;
+  wayland-config.enable = true;
+  hyprland-config.enable = true;
 
   # services.displayManager = {
   #   sddm = {
@@ -181,8 +181,6 @@ in
       ];
     };
   };
-
-  amd-gpu.enable = true;
   
   # mouse config service
   services.ratbagd.enable = true;
@@ -205,9 +203,12 @@ in
   };
 
   home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    backupFileExtension = "backup";
     extraSpecialArgs = { inherit inputs; };
     users = {
-      "user" = import ../home.nix;
+      "user" = import ./home.nix;
     };
   };
 
@@ -215,12 +216,9 @@ in
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   programs.virt-manager.enable = true;
-
-  programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
-  # programs.hyprland.package = pkgs.hyprland.override { debug = true; };
 
   programs.steam.enable = true;
   programs.steam.extest.enable = true;
@@ -262,19 +260,6 @@ in
     lshw
     pciutils
 
-    swww
-    waybar
-    rofi-wayland
-    mako
-    hyprshot
-    satty
-    wl-clipboard
-    wl-clip-persist
-    cliphist
-    libnotify
-    xorg.xlsclients
-
-    xwaylandvideobridge
     pavucontrol
     helvum
     easyeffects
@@ -284,7 +269,7 @@ in
     wine
     wineasio
     winetricks
-    wineWowPackages.waylandFull
+    # wineWowPackages.waylandFull
     mangohud
 
     git-lfs
