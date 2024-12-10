@@ -12,6 +12,7 @@
 
     pkgs.qbittorrent
 
+    pkgs.nil
     pkgs.nixd
     pkgs.zls
     pkgs.lua-language-server

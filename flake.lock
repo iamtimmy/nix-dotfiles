@@ -20,6 +20,26 @@
         "url": "https://flakehub.com/f/chaotic-cx/nyx/%2A.tar.gz"
       }
     },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1733168902,
+        "narHash": "sha256-8dupm9GfK+BowGdQd7EHK5V61nneLfr9xR6sc5vtDi0=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "785c1e02c7e465375df971949b8dcbde9ec362e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "flake-schemas": {
       "locked": {
         "lastModified": 1721999734,
@@ -62,19 +82,11 @@
         ]
       },
       "locked": {
-<<<<<<< HEAD
-        "lastModified": 1733133928,
-        "narHash": "sha256-gU40r9AfpIr4eq+0noM8yH1Hxf+EA3dqfIpFtQl8Y1E=",
+        "lastModified": 1733769654,
+        "narHash": "sha256-aVvYDt8eitZVF6fdOrSoIzYRkQ5Gh6kfRvqkiaDRLL0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "873e39d5f4437d2f3ab06881fea8e63e45e1d011",
-=======
-        "lastModified": 1733389730,
-        "narHash": "sha256-KZMu4ddMll5khS0rYkJsVD0hVqjMNHlhTM3PCQar0Ag=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "65912bc6841cf420eb8c0a20e03df7cbbff5963f",
->>>>>>> 0c46122 (update)
+        "rev": "e952e94955dcc6fa2120c1430789fc41363f5237",
         "type": "github"
       },
       "original": {
@@ -168,12 +180,12 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1733212471,
-        "narHash": "sha256-M1+uCoV5igihRfcUKrr1riygbe73/dzNnzPsmaLCmpo=",
-        "rev": "55d15ad12a74eb7d4646254e13638ad0c4128776",
-        "revCount": 716003,
+        "lastModified": 1733759999,
+        "narHash": "sha256-463SNPWmz46iLzJKRzO3Q2b0Aurff3U1n0nYItxq7jU=",
+        "rev": "a73246e2eef4c6ed172979932bc80e1404ba2d56",
+        "revCount": 719504,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.716003%2Brev-55d15ad12a74eb7d4646254e13638ad0c4128776/01938dca-d03e-7d46-bd29-73676b32dd30/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/NixOS/nixpkgs/0.1.719504%2Brev-a73246e2eef4c6ed172979932bc80e1404ba2d56/0193b014-62bf-72a5-89e9-cd34d50c29a8/source.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -183,6 +195,7 @@
     "root": {
       "inputs": {
         "chaotic": "chaotic",
+        "disko": "disko",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs_2",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor"

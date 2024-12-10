@@ -7,6 +7,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../modules/amd-gpu.nix
     ];
 
   # Bootloader.
@@ -44,13 +45,6 @@ in
     "iommu=pt"
   ];
 
-  # boot.initrd.kernelModules = [ "nvidia" ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
-
-  # boot.kernel.sysctl = {
-  #   "kernel.unprivileged_userns_clone" = 1;
-  # };
-  
   boot.loader = {
     efi.canTouchEfiVariables = true;
     # systemd-boot.enable = true;
@@ -97,16 +91,6 @@ in
   # services.libinput.mouse = {
   #   accelProfile = "flat";
   # };
-
-  # services.desktopManager = {
-  #   plasma6.enable = true;
-  # };
-
-  # environment.plasma6.excludePackages = with pkgs.kdePackages; [
-  #   konsole
-  #   elisa
-  #   kate
-  # ];
 
   xdg = {
     sounds.enable = true;
@@ -197,35 +181,8 @@ in
     };
   };
 
-  # enable 3d acceleration
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      # obs-studio-plugins.obs-vaapi
-      # rocm-opencl-icd
-      # rocm-opencl-runtime
-      # nvidia-vaapi-driver
-      libva-vdpau-driver
-      libvdpau-va-gl
-      vaapiVdpau
-    ];
-    extraPackages32 = with pkgs.pkgsi686Linux; [
-      # nvidia-vaapi-driver
-      libva-vdpau-driver
-      libvdpau-va-gl
-      vaapiVdpau
-    ];
-  };
+  amd-gpu.enable = true;
   
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  # hardware.nvidia = {
-  #   modesetting.enable = true;
-  #   nvidiaSettings = true;
-  #   open = true;
-  #   package = config.boot.kernelPackages.nvidiaPackages.stable;
-  # };
-
   # mouse config service
   services.ratbagd.enable = true;
 
@@ -243,7 +200,6 @@ in
       "video"
       "media"
       "pipewire"
-      "adbusers"
     ];
   };
 
@@ -260,7 +216,6 @@ in
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   programs.virt-manager.enable = true;
-  programs.adb.enable = true;
 
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
@@ -375,9 +330,6 @@ in
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
 
-    # LIBVA_DRIVER_NAME = "nvidia";
-    # GBM_BACKEND = "nvidia-drm";
-    # __GLX_VENDOR_TYPE_LIBRARY_NAME = "nvidia";
     __GL_GSYNC_ALLOWED = "0";
     __GL_VRR_ALLOWED = "0";
 
@@ -416,8 +368,6 @@ in
       decompressFonts = true;
     };
   };
-
-  # disabledModules = ["programs.hyprland.nix"];
 
   system.stateVersion = "23.11";
 }
