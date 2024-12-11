@@ -5,6 +5,7 @@
     ../hm-modules/wayland.nix
     ../hm-modules/hyprland.nix
     ../hm-modules/helix.nix
+    ../hm-modules/waybar.nix
   ];
 
   home.packages = with pkgs; [

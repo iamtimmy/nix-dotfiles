@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   home.file = {
@@ -8,6 +8,8 @@
       export XDG_SESSION_DESKTOP=Hyprland
     '';
   };
+
+  stylix.targets.hyprland.enable = false;
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -40,7 +42,7 @@
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
           # Or execute your favorite apps at launch like this:
 
-          # exec-once = dbug-update-activation-environment --systemd --all
+          # exec-once = dbus-update-activation-environment --systemd --all
           # exec-once = swww-daemon & swww img ~/Pictures/wallpapers/one.png &
           # exec-once = waybar &
           # exec-once = mako &
@@ -179,7 +181,7 @@
           # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
           bind = ${super}, Q, exec, ${terminalCommand}
           bind = ${super}, C, killactive,
-          bind = ${super}, M, exit,
+          bind = ${super}, M, exec, uwsm stop
           bind = ${super}, E, exec, ${fileManagerCommand}
           bind = ${super}, R, exec, ${menuCommand}
           bind = ${super}, V, togglefloating,
@@ -237,6 +239,27 @@
       ];
   };
 
+  systemd.user.services.hypr-waybar-unit = {
+    Unit.Description = "systemd unit for waybar";
+
+    Unit.After = [ "graphical-session.target" ];
+    # Install.WantedBy = [ "wayland-session@hyprland.desktop.target" ];
+    Install.WantedBy = [ "xdg-desktop-autostart.target" ];
+    # Scope.Slice = [ "background-graphical.slice" ];
+
+    Service = {
+      ExecStart = "${pkgs.waybar}/bin/waybar";
+      ExecReload = "kill -SIGUSR2 $MAINPID";
+      Restart = "on-failure";
+      Slice = [ "background-graphical.slice" ];
+    };
+
+    # Service.ExecStart = "${pkgs.writeShellScript "hypr-waybar-unit-script" ''
+    #   #!/run/current-system/sw/bin/bash
+    #   ${pkgs.waybar}/bin/waybar
+    # ''}";
+  };
+
   services = {
     hypridle = {
       settings = {
@@ -263,28 +286,28 @@
   programs.hyprlock = {
     enable = true;
     settings = {
-      general = {
-        disable_loading_bar = true;
-        grace = 10;
-        hide_cursor = true;
-        no_fade_in = false;
-      };
+      # general = {
+      #   disable_loading_bar = true;
+      #   grace = 10;
+      #   hide_cursor = true;
+      #   no_fade_in = false;
+      # };
 
-      input-field = [
-        {
-          size = "200, 50";
-          position = "0, -80";
-          monitor = "";
-          dots_center = true;
-          fade_on_empty = false;
-          font_color = "rgb(CFE6F4)";
-          inner_color = "rgb(657DC2)";
-          outer_color = "rgb(0D0E15)";
-          outline_thickness = 5;
-          placeholder_text = "Password...";
-          shadow_passes = 2;
-        }
-      ];
+      # input-field = [
+      #   {
+      #     size = "200, 50";
+      #     position = "0, -80";
+      #     monitor = "";
+      #     dots_center = true;
+      #     fade_on_empty = false;
+      #     font_color = "rgb(CFE6F4)";
+      #     inner_color = "rgb(657DC2)";
+      #     outer_color = "rgb(0D0E15)";
+      #     outline_thickness = 5;
+      #     placeholder_text = "Password...";
+      #     shadow_passes = 2;
+      #   }
+      # ];
     };
   };
 }

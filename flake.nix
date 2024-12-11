@@ -5,15 +5,20 @@
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.0.tar.gz";
     chaotic.url = "https://flakehub.com/f/chaotic-cx/nyx/*.tar.gz";
 
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    rose-pine-hyprcursor = {
-      url = "github:ndom91/rose-pine-hyprcursor";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # rose-pine-hyprcursor = {
+    #   url = "github:ndom91/rose-pine-hyprcursor";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     disko = {
       url = "github:nix-community/disko";
@@ -32,14 +37,9 @@
         desktop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            inputs.home-manager.nixosModules.default
-            {
-              environment.systemPackages = [
-                # inputs.ghostty.packages.x86_64-linux.default
-                inputs.rose-pine-hyprcursor.packages.x86_64-linux.default
-              ];
-            }
             inputs.chaotic.nixosModules.default
+            inputs.stylix.nixosModules.stylix
+            inputs.home-manager.nixosModules.default
             ./desktop/configuration.nix
           ];
         };
