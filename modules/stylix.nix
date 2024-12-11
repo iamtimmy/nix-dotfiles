@@ -36,7 +36,7 @@ in
       #   base0F = "56526e";
       # };
 
-      image = ../assets/wallpapers/one.png;
+      image = ../assets/wallpapers/two.jpg;
 
       polarity = "dark";
 

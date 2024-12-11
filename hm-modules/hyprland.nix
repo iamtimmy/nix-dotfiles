@@ -3,7 +3,6 @@
 {
   home.file = {
     ".config/uwsm/env-hyprland".text = ''
-      export HYPRCURSOR_THEME=rose-pine-hyprcursor
       export XDG_CURRENT_DESKTOP=Hyprland
       export XDG_SESSION_DESKTOP=Hyprland
     '';
@@ -42,7 +41,6 @@
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
           # Or execute your favorite apps at launch like this:
 
-          # exec-once = dbus-update-activation-environment --systemd --all
           # exec-once = swww-daemon & swww img ~/Pictures/wallpapers/one.png &
           # exec-once = waybar &
           # exec-once = mako &
@@ -241,11 +239,9 @@
 
   systemd.user.services.hypr-waybar-unit = {
     Unit.Description = "systemd unit for waybar";
-
     Unit.After = [ "graphical-session.target" ];
-    # Install.WantedBy = [ "wayland-session@hyprland.desktop.target" ];
+
     Install.WantedBy = [ "xdg-desktop-autostart.target" ];
-    # Scope.Slice = [ "background-graphical.slice" ];
 
     Service = {
       ExecStart = "${pkgs.waybar}/bin/waybar";
@@ -253,15 +249,33 @@
       Restart = "on-failure";
       Slice = [ "background-graphical.slice" ];
     };
+  };
 
-    # Service.ExecStart = "${pkgs.writeShellScript "hypr-waybar-unit-script" ''
-    #   #!/run/current-system/sw/bin/bash
-    #   ${pkgs.waybar}/bin/waybar
-    # ''}";
+  systemd.user.services.hypr-swww-daemon-unit = {
+    # Unit.Description = "systemd unit for swww";
+    Unit.Description = "systemd unit for swww-daemon";
+    Unit.After = [ "graphical-session.target" ];
+
+    Install.WantedBy = [ "xdg-desktop-autostart.target" ];
+
+    Service = {
+      ExecStart = "${pkgs.swww}/bin/swww-daemon";
+      # ExecStart = "${pkgs.writeShellScript "hypr-swww-unit-script" ''
+      #   #!${pkgs.bash}/bin/bash
+      #   ${pkgs.swww}/bin/swww-daemon &;
+      #   sleep 1
+      #   ${pkgs.swww}/bin/swww img ~/dotfiles/assets/wallpapers/one.png
+      # ''}";
+      # ExecReload = "kill -SIGUSR2 $MAINPID; pkill -15 swww-daemon}]";
+      ExecReload = "kill -SIGUSR2 $MAINPID}]";
+      Restart = "on-failure";
+      Slice = [ "background-graphical.slice" ];
+    };
   };
 
   services = {
     hypridle = {
+      enable = true;
       settings = {
         general = {
           after_sleep_cmd = "hyprctl dispatch dpms on";
@@ -286,12 +300,12 @@
   programs.hyprlock = {
     enable = true;
     settings = {
-      # general = {
-      #   disable_loading_bar = true;
-      #   grace = 10;
-      #   hide_cursor = true;
-      #   no_fade_in = false;
-      # };
+      general = {
+        disable_loading_bar = true;
+        grace = 10;
+        hide_cursor = true;
+        no_fade_in = false;
+      };
 
       # input-field = [
       #   {
