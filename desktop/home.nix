@@ -6,6 +6,7 @@
     ../hm-modules/hyprland.nix
     ../hm-modules/helix.nix
     ../hm-modules/waybar.nix
+    ../hm-modules/wlogout.nix
   ];
 
   home.packages = with pkgs; [

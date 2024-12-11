@@ -42,6 +42,8 @@
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback.out
+
+    # hid-tmff2.out
   ];
 
   boot.kernelModules = [
@@ -49,6 +51,8 @@
     "v4l2loopback"
     # Virtual Microphone, built-in
     "sdn-aloop"
+
+    # "hid-tmff2"
   ];
 
   boot.extraModprobeConfig = ''
@@ -156,16 +160,20 @@
 
   programs.virt-manager.enable = true;
 
-  programs.steam.enable = true;
-  programs.steam.extest.enable = true;
-  programs.steam.protontricks.enable = true;
+  programs.steam = {
+    enable = true;
+    extest.enable = true;
+    protontricks.enable = true;
+    gamescopeSession.enable = true;
 
-  # programs.steam.gamescopeSession.enable = true;
-  # programs.steam.extraCompatPackages = with pkgs; [
-  #   proton-ge-custom
-  # ];
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+      proton-ge-custom
+      luxtorpeda
+    ];
+  };
 
-  # programs.gamemode.enable = true;
+  programs.gamemode.enable = true;
 
   # services.flatpak.enable = true;
 
@@ -207,6 +215,7 @@
     winetricks
     # wineWowPackages.waylandFull
     mangohud
+    oversteer # see https://github.com/computerdane/moza-racing-wheel-nix for moza
 
     git-lfs
     unzip
@@ -222,6 +231,9 @@
     edk2-uefi-shell
 
     obs-studio
+
+    xfce.thunar
+    xarchiver
 
     kitty
     jetbrains.clion
