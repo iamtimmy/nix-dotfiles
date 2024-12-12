@@ -14,6 +14,8 @@
     ../modules/hyprland.nix
     ../modules/stylix.nix
     ../modules/pipewire.nix
+
+    ../modules/wheelsupport.nix
   ];
 
   # Kernel and Bootloader options
@@ -42,8 +44,6 @@
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback.out
-
-    # hid-tmff2.out
   ];
 
   boot.kernelModules = [
@@ -51,8 +51,6 @@
     "v4l2loopback"
     # Virtual Microphone, built-in
     "sdn-aloop"
-
-    # "hid-tmff2"
   ];
 
   boot.extraModprobeConfig = ''
@@ -116,7 +114,6 @@
   # Enable sound with pipewire.
   security.rtkit.enable = true;
   security.polkit.enable = true;
-
 
   # mouse config service
   services.ratbagd.enable = true;
@@ -208,6 +205,7 @@
     helvum
     easyeffects
 
+    protonup-qt
     bottles
     steam-run
     wine
@@ -215,7 +213,6 @@
     winetricks
     # wineWowPackages.waylandFull
     mangohud
-    oversteer # see https://github.com/computerdane/moza-racing-wheel-nix for moza
 
     git-lfs
     unzip
