@@ -237,6 +237,20 @@
       ];
   };
 
+  systemd.user.services.hypr-lxqt-policykit-unit = {
+    Unit.Description = "systemd unit for lxqt policy kit";
+    Unit.After = [ "graphical-session.target" ];
+
+    Install.WantedBy = [ "xdg-desktop-autostart.target" ];
+
+    Service = {
+      ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
+      ExecReload = "kill -SIGUSR2 $MAINPID";
+      Restart = "on-failure";
+      Slice = [ "background-graphical.slice" ];
+    };
+  };
+
   systemd.user.services.hypr-waybar-unit = {
     Unit.Description = "systemd unit for waybar";
     Unit.After = [ "graphical-session.target" ];
