@@ -31,6 +31,6 @@
   };
 
   home.sessionVariables = {
-    EDITOR = "helix";
+    EDITOR = "hx";
   };
 }

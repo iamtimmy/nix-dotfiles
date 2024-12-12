@@ -32,7 +32,7 @@
           ################
 
           # See https://wiki.hyprland.org/Configuring/Monitors/
-          monitor = ,highres@highrr,auto,1,bitdepth,10
+          monitor = ,highres@highrr,auto,1
 
           #################
           ### AUTOSTART ###
