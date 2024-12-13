@@ -19,6 +19,8 @@ in
     services.xserver.videoDrivers = [ "amdgpu" ];
     systemd.tmpfiles.rules = [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}" ];
 
+    hardware.amdgpu.opencl.enable = true;
+
     hardware.graphics = {
       enable = true;
       enable32Bit = true;

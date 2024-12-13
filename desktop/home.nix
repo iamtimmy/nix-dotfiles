@@ -19,6 +19,8 @@
     qbittorrent
 
     localsend
+
+    aichat
   ];
 
   programs = {

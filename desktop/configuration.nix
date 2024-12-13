@@ -118,6 +118,16 @@
   # mouse config service
   services.ratbagd.enable = true;
 
+  services.ollama = {
+    enable = true;
+    acceleration = "rocm";
+    environmentVariables = {
+      HCC_AMD_GPU_TARGET = "gfx1100";
+      OLLAMA_KV_CACHE_TYPE = "q8_0";
+    };
+    rocmOverrideGfx = "11.0.0";
+  };
+
   # define user
   users.users.user = {
     isNormalUser = true;
@@ -196,6 +206,7 @@
     lazygit
     fastfetch
     ripgrep
+    tree
 
     gh
     lshw
