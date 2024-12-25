@@ -216,27 +216,12 @@
     helvum
     easyeffects
 
-    protonup-qt
     bottles
-    steam-run
+
     wine
     wineasio
     winetricks
-    # wineWowPackages.waylandFull
     mangohud
-
-    git-lfs
-    unzip
-    gnumake
-    cmake
-    ninja
-    clang
-    llvmPackages_latest.llvm
-    mono
-    python3
-    zig
-    luajit
-    edk2-uefi-shell
 
     obs-studio
 
@@ -244,23 +229,26 @@
     xarchiver
 
     kitty
-    jetbrains.clion
-    zed-editor_git
     firefox
-    vesktop
+
+    # wineWowPackages.waylandFull
   ];
 
-  # programs.nix-ld = {
-  #   enable = true;
-  #   libraries = with pkgs; [
-  #     openssl
-  #     libGL
-  #     glibc
-  #     glib
-  #     xorg.libxcb
-  #     libsForQt5.qt5.qtbase
-  #   ];
-  # };
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      openssl
+      libGL
+      glibc
+      glib
+      xorg.libxcb
+      xorg.libXext
+      xorg.libX11
+      xorg.libXrender
+      xorg.libXtst
+      xorg.libXi
+    ];
+  };
 
   environment.sessionVariables = {
     FLAKE = "$HOME/dotfiles";
