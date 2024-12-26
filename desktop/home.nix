@@ -23,7 +23,7 @@
     aichat
     vesktop
 
-    jetbrains.idea-community-src
+    jetbrains.idea-community-bin
     jetbrains.clion
     zed-editor_git
 
