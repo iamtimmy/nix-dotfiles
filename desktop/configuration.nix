@@ -230,6 +230,7 @@
 
     kitty
     firefox
+    inputs.zen-browser.packages."${system}".default
 
     # wineWowPackages.waylandFull
   ];
