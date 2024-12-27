@@ -113,7 +113,6 @@
 
   # Enable sound with pipewire.
   security.rtkit.enable = true;
-  security.polkit.enable = true;
 
   # mouse config service
   services.ratbagd.enable = true;
@@ -185,7 +184,13 @@
   # services.flatpak.enable = true;
 
   programs.gamescope.enable = true;
+
   programs.firejail.enable = true;
+
+  security.apparmor.enable = true;
+  services.dbus.apparmor = "enabled";
+
+  security.polkit.enable = true;
 
   programs.nh = {
     enable = true;
@@ -238,16 +243,41 @@
   programs.nix-ld = {
     enable = true;
     libraries = with pkgs; [
-      openssl
-      libGL
       glibc
+      libgcc
       glib
+
+      zlib
+
+      # libcxx
+
+      libGL
+      openssl
+
+      icu
+      nss
+      nspr
+      dbus
+      at-spi2-atk
+      cups
+      libdrm
+
+      mesa
+      expat
+      
+      xorg.libXrandr
+      xorg.libXfixes
+      xorg.libXdamage
+      xorg.libXcomposite
       xorg.libxcb
       xorg.libXext
       xorg.libX11
       xorg.libXrender
       xorg.libXtst
       xorg.libXi
+
+      gtk3
+      gtk4
     ];
   };
 
