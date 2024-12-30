@@ -21,6 +21,10 @@ in
       wl-clip-persist
       xwaylandvideobridge
       libnotify
+
+      # fixes theme and font incompatibilities
+      xsettingsd
+      xorg.xrdb
     ];
   };
 }

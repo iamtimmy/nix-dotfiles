@@ -7,6 +7,8 @@
 with lib;
 let
   cfg = config.hyprland-config;
+
+  hyprland-qtutils = pkgs.callPackage ../pkgs/hyprland-qtutils.nix { };
 in
 {
   options.hyprland-config = {
@@ -27,6 +29,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
+      hyprland-qtutils
       kitty # default terminal
 
       waybar
@@ -44,4 +47,3 @@ in
     ];
   };
 }
-

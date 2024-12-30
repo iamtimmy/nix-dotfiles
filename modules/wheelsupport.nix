@@ -5,7 +5,7 @@ let
   oversteer = pkgs.callPackage ../pkgs/oversteer.nix { };
 
   universal-pidff = config.boot.kernelPackages.callPackage ../pkgs/universal-pidff.nix { };
-  boxflat = pkgs.callPackage ../pkgs/boxflat_old.nix { };
+  # boxflat = pkgs.callPackage ../pkgs/boxflat_old.nix { };
 in
 {
   boot.blacklistedKernelModules = [ "hid-thrustmaster" ];
@@ -14,7 +14,7 @@ in
 
   environment.systemPackages = with pkgs; [
     oversteer
-    boxflat
+    # boxflat
 
     opentrack
     aitrack

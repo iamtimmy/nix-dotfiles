@@ -17,9 +17,9 @@ in
     boot.initrd.kernelModules = [ "amdgpu" ];
 
     services.xserver.videoDrivers = [ "amdgpu" ];
-    systemd.tmpfiles.rules = [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}" ];
+    # systemd.tmpfiles.rules = [ "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}" ];
 
-    hardware.amdgpu.opencl.enable = true;
+    # hardware.amdgpu.opencl.enable = true;
 
     hardware.graphics = {
       enable = true;

@@ -16,6 +16,21 @@
     ../modules/pipewire.nix
 
     ../modules/wheelsupport.nix
+    ../modules/flatpak.nix
+  ];
+
+  # temporary fix area
+  nixpkgs.overlays = [
+    (final: prev: {
+      dmraid = prev.dmraid.overrideAttrs (oA: {
+        patches = oA.patches ++ [
+          (prev.fetchpatch2 {
+            url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f298cd74e67a841289fd0f10ef4ee85cfbbc4133/pkgs/os-specific/linux/dmraid/fix-dmevent_tool.patch";
+            hash = "sha256-MmAzpdM3UNRdOk66CnBxVGgbJTzJK43E8EVBfuCFppc=";
+          })
+        ];
+      });
+    })
   ];
 
   # Kernel and Bootloader options
@@ -117,15 +132,15 @@
   # mouse config service
   services.ratbagd.enable = true;
 
-  services.ollama = {
-    enable = true;
-    acceleration = "rocm";
-    environmentVariables = {
-      HCC_AMD_GPU_TARGET = "gfx1100";
-      OLLAMA_KV_CACHE_TYPE = "q8_0";
-    };
-    rocmOverrideGfx = "11.0.0";
-  };
+  # services.ollama = {
+  #   enable = true;
+  #   acceleration = "rocm";
+  #   environmentVariables = {
+  #     HCC_AMD_GPU_TARGET = "gfx1100";
+  #     OLLAMA_KV_CACHE_TYPE = "q8_0";
+  #   };
+  #   rocmOverrideGfx = "11.0.0";
+  # };
 
   # define user
   users.users.user = {
@@ -164,7 +179,10 @@
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
-  programs.virt-manager.enable = true;
+  # programs.virt-manager.enable = true;
+  # virtualisation.libvirtd.enable = true;
+
+  virtualisation.vmware.host.enable = true;
 
   programs.steam = {
     enable = true;
@@ -180,8 +198,6 @@
   };
 
   programs.gamemode.enable = true;
-
-  # services.flatpak.enable = true;
 
   programs.gamescope.enable = true;
 
@@ -208,10 +224,12 @@
   environment.systemPackages = with pkgs; [
     helix
     git
+    git-lfs
     lazygit
     fastfetch
     ripgrep
     tree
+    nix-index
 
     gh
     lshw
@@ -220,8 +238,6 @@
     pavucontrol
     helvum
     easyeffects
-
-    bottles
 
     wine
     wineasio
@@ -237,6 +253,7 @@
     firefox
     inputs.zen-browser.packages."${system}".default
 
+    vmware-workstation
     # wineWowPackages.waylandFull
   ];
 
@@ -247,10 +264,8 @@
       libgcc
       glib
 
-      zlib
-
-      # libcxx
-
+      libz
+      
       libGL
       openssl
 
@@ -264,7 +279,8 @@
 
       mesa
       expat
-      
+
+      libxkbcommon
       xorg.libXrandr
       xorg.libXfixes
       xorg.libXdamage
@@ -278,6 +294,9 @@
 
       gtk3
       gtk4
+      pango
+      cairo
+      alsa-lib
     ];
   };
 

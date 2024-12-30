@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  grayjay = pkgs.callPackage ../pkgs/grayjay.nix { };
+in
 {
   imports = [
     ../hm-modules/wayland.nix
@@ -10,40 +13,26 @@
   ];
 
   home.packages = with pkgs; [
+    # ghostty
+
+    vesktop
     telegram-desktop
+    grayjay
     freetube
     tidal-hifi
 
-    gpt4all
-
     qbittorrent
-
     localsend
 
-    aichat
-    vesktop
+    # aichat
 
     jetbrains.idea-community-bin
     jetbrains.clion
-    zed-editor_git
-
-    steam-run
-
-    git-lfs
-    unzip
-    gnumake
-    cmake
-    ninja
-    clang
-    mono
-    python3
-    zig
-    luajit
-    edk2-uefi-shell
-    llvmPackages_latest.llvm
-    jdk11
+    # zed-editor_git
 
     cointop
+
+    ungoogled-chromium
   ];
 
   programs = {

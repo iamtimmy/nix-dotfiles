@@ -20,9 +20,10 @@
         # AUTOSTART
         super = "SUPER";
 
-        terminalCommand = "uwsm app -- kitty";
-        fileManagerCommand = "uwsm app -- dolphin";
-        menuCommand = "uwsm app -- rofi -show drun -show-colors";
+        terminalCommand = "uwsm app -- ${pkgs.kitty}/bin/kitty";
+        fileManagerCommand = "uwsm app -- ${pkgs.xfce.thunar}/bin/thunar";
+        menuCommand = "uwsm app -- ${pkgs.rofi}/bin/rofi -show drun -show-colors";
+        logoutCommand = "${pkgs.wlogout}/bin/wlogout";
 
       in
       lib.concatStrings [
@@ -40,15 +41,6 @@
 
           # Autostart necessary processes (like notifications daemons, status bars, etc.)
           # Or execute your favorite apps at launch like this:
-
-          # exec-once = swww-daemon & swww img ~/Pictures/wallpapers/one.png &
-          # exec-once = waybar &
-          # exec-once = mako &
-          # exec-once = wl-paste --paste text --watch cliphist store #Stores only text data
-          # exec-once = wl-paste --paste image --watch cliphist store #Stores only image data
-          # exec-once = easyeffects --gapplication-service
-
-          # exec-once = /nix/store/$(ls -la /nix/store | grep polkit-kde-agent | grep '^d' | awk '{print $9}')/libexec/polkit-kde-authentication-agent-1 &
 
           #############################
           ### ENVIRONMENT VARIABLES ###
@@ -185,6 +177,7 @@
           bind = ${super}, V, togglefloating,
           bind = ${super}, P, pseudo, # dwindle
           bind = ${super}, J, togglesplit, # dwindle
+          bind = ${super}, L, exec, ${logoutCommand}
 
           # Move focus with {super} + arrow keys
           bind = ${super}, left, movefocus, l
