@@ -20,7 +20,7 @@
         # AUTOSTART
         super = "SUPER";
 
-        terminalCommand = "uwsm app -- ${pkgs.kitty}/bin/kitty";
+        terminalCommand = "uwsm app -- ${pkgs.ghostty}/bin/ghostty";
         fileManagerCommand = "uwsm app -- ${pkgs.xfce.thunar}/bin/thunar";
         menuCommand = "uwsm app -- ${pkgs.rofi}/bin/rofi -show drun -show-colors";
         logoutCommand = "${pkgs.wlogout}/bin/wlogout";

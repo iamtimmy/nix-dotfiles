@@ -13,8 +13,6 @@ in
   ];
 
   home.packages = with pkgs; [
-    # ghostty
-
     vesktop
     telegram-desktop
     grayjay

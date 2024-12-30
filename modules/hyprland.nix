@@ -30,7 +30,7 @@ in
 
     environment.systemPackages = with pkgs; [
       hyprland-qtutils
-      kitty # default terminal
+      ghostty # default terminal
 
       waybar
       rofi-wayland
