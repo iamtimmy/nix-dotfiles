@@ -23,8 +23,11 @@
         terminalCommand = "uwsm app -- ${pkgs.ghostty}/bin/ghostty";
         fileManagerCommand = "uwsm app -- ${pkgs.xfce.thunar}/bin/thunar";
         menuCommand = "uwsm app -- ${pkgs.rofi}/bin/rofi -show drun -show-colors";
-        logoutCommand = "${pkgs.wlogout}/bin/wlogout";
+        logoutCommand = "uwsm app -- ${pkgs.wlogout}/bin/wlogout";
 
+        playerctlCommand = "${pkgs.playerctl}/bin/playerctl";
+
+        clipboardHistoryCommand = "uwsm app -- ${pkgs.alacritty}/bin/alacritty --class clipse -e ${pkgs.clipse}/bin/clipse";
       in
       lib.concatStrings [
         ''
@@ -169,21 +172,26 @@
           # See https://wiki.hyprland.org/Configuring/Keywords/
 
           # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-          bind = ${super}, Q, exec, ${terminalCommand}
-          bind = ${super}, C, killactive,
-          bind = ${super}, M, exec, uwsm stop
+          bind = ${super}, RETURN, exec, ${terminalCommand}
+          bind = ${super}, Q, killactive,
           bind = ${super}, E, exec, ${fileManagerCommand}
-          bind = ${super}, R, exec, ${menuCommand}
-          bind = ${super}, V, togglefloating,
+          bind = ${super}, SPACE, exec, ${menuCommand}
+          bind = ${super}, V, exec, ${clipboardHistoryCommand}
           bind = ${super}, P, pseudo, # dwindle
-          bind = ${super}, J, togglesplit, # dwindle
-          bind = ${super}, L, exec, ${logoutCommand}
+          # bind = ${super}, J, togglesplit, # dwindle
+          bind = ${super} ALT, ESCAPE, exec, ${logoutCommand}
 
-          # Move focus with {super} + arrow keys
-          bind = ${super}, left, movefocus, l
-          bind = ${super}, right, movefocus, r
-          bind = ${super}, up, movefocus, u
-          bind = ${super}, down, movefocus, d
+          # Move focus with {super} + hjkl
+          bind = ${super}, H, movefocus, l
+          bind = ${super}, L, movefocus, r
+          bind = ${super}, K, movefocus, u
+          bind = ${super}, J, movefocus, d
+
+          # Resize with {super} + hjkl
+          bind = ${super} ALT, H, resizeactive, -20 0
+          bind = ${super} ALT, L, resizeactive, 20 0
+          bind = ${super} ALT, K, resizeactive, 0 -20
+          bind = ${super} ALT, J, resizeactive, 0 20
 
           # Switch workspaces with {super} + [0-9]
           bind = ${super}, 1, workspace, 1
@@ -223,6 +231,13 @@
 
           windowrulev2 = suppressevent maximize, class:.* # You'll probably like this.
 
+          windowrulev2 = float,class:(clipse)
+          windowrulev2 = size 622 652,class:(clipse)
+
+          bindl = , XF86AudioPlay, exec, ${playerctlCommand} play-pause
+          bindl = , XF86AudioPrev, exec, ${playerctlCommand} previous
+          bindl = , XF86AudioNext, exec, ${playerctlCommand} next
+
           bind = , PRINT, exec, uwsm app -- hyprshot -m window --clipboard-only # Screenshot a window
           bind = ${super}, PRINT, exec, uwsm app -- hyprshot -m output --clipboard-only # Screenshot a monitor
           bind = ${super} SHIFT, PRINT, exec, uwsm app -- hyprshot -m region --clipboard-only # Screenshot a region
@@ -230,14 +245,28 @@
       ];
   };
 
-  systemd.user.services.hypr-lxqt-policykit-unit = {
-    Unit.Description = "systemd unit for lxqt policy kit";
+  systemd.user.services.clipse-listener-unit = {
+    Unit.Description = "systemd unit for clipse";
     Unit.After = [ "graphical-session.target" ];
 
     Install.WantedBy = [ "xdg-desktop-autostart.target" ];
 
     Service = {
-      ExecStart = "${pkgs.lxqt.lxqt-policykit}/bin/lxqt-policykit-agent";
+      ExecStart = "${pkgs.clipse}/bin/clipse --listen-shell";
+      ExecReload = "kill -SIGUSR2 $MAINPID";
+      Restart = "on-failure";
+      Slice = [ "background-graphical.slice" ];
+    };
+  };
+
+  systemd.user.services.hypr-policykit-agent-unit = {
+    Unit.Description = "systemd unit for hypr policykit agent";
+    Unit.After = [ "graphical-session.target" ];
+
+    Install.WantedBy = [ "xdg-desktop-autostart.target" ];
+
+    Service = {
+      ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
       ExecReload = "kill -SIGUSR2 $MAINPID";
       Restart = "on-failure";
       Slice = [ "background-graphical.slice" ];

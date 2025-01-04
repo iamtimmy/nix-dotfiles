@@ -26,7 +26,7 @@
       }
       {
         "label" = "logout";
-        "action" = "sleep 1; loginctl terminate-user \"$XDG_SESSION_ID\"";
+        "action" = "sleep 1; uwsm stop";
         "text" = "";
         # "text" = "Exit";
         "keybind" = "e";
@@ -45,13 +45,13 @@
         # "text" = "Lock";
         "keybind" = "l";
       }
-      {
-        "label" = "hibernate";
-        "action" = "sleep 1; systemctl hibernate";
-        "text" = "";
-        # "text" = "Hibernate";
-        "keybind" = "h";
-      }
+      # {
+      #   "label" = "hibernate";
+      #   "action" = "sleep 1; systemctl hibernate";
+      #   "text" = "";
+      #   # "text" = "Hibernate";
+      #   "keybind" = "h";
+      # }
     ];
     style = ''
       * {
