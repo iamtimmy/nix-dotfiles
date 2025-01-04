@@ -19,20 +19,6 @@
     ../modules/flatpak.nix
   ];
 
-  # temporary fix area
-  # nixpkgs.overlays = [
-  #   (final: prev: {
-  #     dmraid = prev.dmraid.overrideAttrs (oA: {
-  #       patches = oA.patches ++ [
-  #         (prev.fetchpatch2 {
-  #           url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f298cd74e67a841289fd0f10ef4ee85cfbbc4133/pkgs/os-specific/linux/dmraid/fix-dmevent_tool.patch";
-  #           hash = "sha256-MmAzpdM3UNRdOk66CnBxVGgbJTzJK43E8EVBfuCFppc=";
-  #         })
-  #       ];
-  #     });
-  #   })
-  # ];
-
   # Kernel and Bootloader options
   boot.loader = {
     efi.canTouchEfiVariables = true;
@@ -78,8 +64,10 @@
   networking.hostName = "desktop";
   networking.networkmanager.enable = true;
 
+  hardware.keyboard.qmk.enable = true;
+
   hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+  hardware.bluetooth.powerOnBoot = false;
   services.blueman.enable = true;
 
   time.hardwareClockInLocalTime = true;
@@ -255,6 +243,14 @@
 
     vmware-workstation
     # wineWowPackages.waylandFull
+
+    via
+    vial
+  ];
+
+  services.udev.packages = with pkgs; [
+    via
+    vial
   ];
 
   programs.nix-ld = {
@@ -280,6 +276,12 @@
       mesa
       expat
 
+      gtk3
+      gtk4
+      pango
+      cairo
+      alsa-lib
+
       libxkbcommon
       xorg.libXrandr
       xorg.libXfixes
@@ -292,11 +294,8 @@
       xorg.libXtst
       xorg.libXi
 
-      gtk3
-      gtk4
-      pango
-      cairo
-      alsa-lib
+      freetype
+      fontconfig
     ];
   };
 
@@ -354,6 +353,7 @@
         ];
       };
       enable = true;
+      includeUserConf = true;
     };
 
     fontDir = {

@@ -10,6 +10,8 @@ in
     ../hm-modules/helix.nix
     ../hm-modules/waybar.nix
     ../hm-modules/wlogout.nix
+
+    ../hm-modules/development.nix
   ];
 
   home.packages = with pkgs; [
@@ -53,6 +55,8 @@ in
       enableCompletion = true;
     };
   };
+
+  fonts.fontconfig.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
