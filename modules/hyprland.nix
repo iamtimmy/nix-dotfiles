@@ -7,8 +7,6 @@
 with lib;
 let
   cfg = config.hyprland-config;
-
-  # hyprland-qtutils = pkgs.callPackage ../pkgs/hyprland-qtutils.nix { };
 in
 {
   options.hyprland-config = {
@@ -33,7 +31,6 @@ in
       ghostty # default terminal
 
       waybar
-      rofi-wayland
 
       mako
       satty

@@ -23,6 +23,7 @@
         terminalCommand = "uwsm app -- ${pkgs.ghostty}/bin/ghostty";
         fileManagerCommand = "uwsm app -- ${pkgs.xfce.thunar}/bin/thunar";
         menuCommand = "uwsm app -- ${pkgs.rofi}/bin/rofi -show drun -show-colors";
+        menu2Command = "uwsm app -- ${pkgs.walker}/bin/walker";
         logoutCommand = "uwsm app -- ${pkgs.wlogout}/bin/wlogout";
 
         playerctlCommand = "${pkgs.playerctl}/bin/playerctl";
@@ -175,7 +176,7 @@
           bind = ${super}, RETURN, exec, ${terminalCommand}
           bind = ${super}, Q, killactive,
           bind = ${super}, E, exec, ${fileManagerCommand}
-          bind = ${super}, SPACE, exec, ${menuCommand}
+          bind = ${super}, SPACE, exec, ${menu2Command}
           bind = ${super}, V, exec, ${clipboardHistoryCommand}
           bind = ${super}, P, pseudo, # dwindle
           # bind = ${super}, J, togglesplit, # dwindle
@@ -253,6 +254,20 @@
 
     Service = {
       ExecStart = "${pkgs.clipse}/bin/clipse --listen-shell";
+      ExecReload = "kill -SIGUSR2 $MAINPID";
+      Restart = "on-failure";
+      Slice = [ "background-graphical.slice" ];
+    };
+  };
+
+  systemd.user.services.walker-service-unit = {
+    Unit.Description = "systemd unit for walker";
+    Unit.After = [ "graphical-session.target" ];
+
+    Install.WantedBy = [ "xdg-desktop-autostart.target" ];
+
+    Service = {
+      ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
       ExecReload = "kill -SIGUSR2 $MAINPID";
       Restart = "on-failure";
       Slice = [ "background-graphical.slice" ];
