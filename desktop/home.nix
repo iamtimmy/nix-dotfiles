@@ -15,6 +15,7 @@ in
   ];
 
   home.packages = with pkgs; [
+    vlc
     vesktop
     telegram-desktop
     grayjay
