@@ -59,8 +59,6 @@ in
 
   fonts.fontconfig.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
-
   home.username = "user";
   home.homeDirectory = "/home/user";
 
