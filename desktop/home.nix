@@ -39,6 +39,16 @@ in
   programs = {
     home-manager.enable = true;
 
+    tmux = {
+      enable = true;
+      mouse = true;
+      focusEvents = true;
+      plugins = with pkgs; [
+        tmuxPlugins.yank
+        tmuxPlugins.urlview
+      ];
+    };
+
     btop = {
       enable = true;
       settings = {
