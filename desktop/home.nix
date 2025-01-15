@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{  pkgs, ... }:
 
 let
   grayjay = pkgs.callPackage ../pkgs/grayjay.nix { };
@@ -95,11 +95,7 @@ in
        '';
     };
 
-    zellij = {
-      enable = true;
-      enableBashIntegration = true;
-      enableFishIntegration = true;
-    };
+    zellij.enable = true;
   };
 
   fonts.fontconfig.enable = true;

@@ -7,27 +7,31 @@
 {
   services.flatpak.enable = true;
 
-  services.flatpak.packages = [
-    "com.usebottles.bottles"
-    "io.github.lawstorant.boxflat"
-  ];
-  
-  services.flatpak.update.onActivation = true;
+  # services.flatpak.packages = [
+  #   "io.github.lawstorant.boxflat"
+  # ];
 
-  services.flatpak.overrides = {
-    global = {
-      # Force Wayland by default
-      Context.sockets = ["wayland" "!x11" "!fallback-x11"];
+  # services.flatpak.update.auto = {
+  #   enable = false;
+  #   onCalendar = "daily";
+  # };
 
-      Environment = {
-        # Fix un-themed cursor in some Wayland apps
-        XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+  # services.flatpak.update.onActivation = true;
 
-        # Force correct theme for some GTK apps
-        GTK_THEME = "Adwaita:dark";
-      };
-    };
-  };
+  # services.flatpak.overrides = {
+  #   global = {
+  #     # Force Wayland by default
+  #     Context.sockets = ["wayland" "!x11" "!fallback-x11"];
+
+  #     Environment = {
+  #       # Fix un-themed cursor in some Wayland apps
+  #       XCURSOR_PATH = "/run/host/user-share/icons:/run/host/share/icons";
+
+  #       # Force correct theme for some GTK apps
+  #       GTK_THEME = "Adwaita:dark";
+  #     };
+  #   };
+  # };
 
 
   system.fsPackages = [ pkgs.bindfs ];

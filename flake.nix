@@ -17,9 +17,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-flatpak = {
-      url = "github:gmodena/nix-flatpak";
-    };
+    # nix-flatpak = {
+    #   url = "github:gmodena/nix-flatpak";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     disko = {
       url = "github:nix-community/disko";
@@ -30,10 +31,6 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # ghostty = {
-    #   url = "git+ssh://git@github.com/ghostty-org/ghostty";
-    # };
   };
 
   outputs =
@@ -46,7 +43,7 @@
             inputs.chaotic.nixosModules.default
             inputs.stylix.nixosModules.stylix
             inputs.home-manager.nixosModules.default
-            inputs.nix-flatpak.nixosModules.nix-flatpak
+            # inputs.nix-flatpak.nixosModules.nix-flatpak
             ./desktop/configuration.nix
           ];
         };

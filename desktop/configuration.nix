@@ -217,6 +217,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nushell
+    devenv
     helix
     git
     git-lfs
