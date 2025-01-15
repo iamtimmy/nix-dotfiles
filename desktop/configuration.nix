@@ -146,6 +146,7 @@
       "media"
       "pipewire"
     ];
+    shell = pkgs.fish;
   };
 
   home-manager = {
@@ -203,6 +204,10 @@
     clean.extraArgs = "--keep-since 4d --keep 10";
   };
 
+  programs.fish = {
+    enable = true;
+  };
+
   programs.git = {
     enable = true;
     lfs.enable = true;
@@ -211,6 +216,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    nushell
     helix
     git
     git-lfs
@@ -246,7 +252,6 @@
     # wineWowPackages.waylandFull
 
     via
-    vial
   ];
 
   services.udev.packages = with pkgs; [
