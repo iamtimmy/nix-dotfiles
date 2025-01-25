@@ -2,6 +2,13 @@
 
 {
   home.packages = with pkgs; [
-    # jdk11
+    llvmPackages.libcxxClang
+    libcxx
+    libgcc
+    gnumake
+    ninja
+    cmake
+    zig
+    zls
   ];
 }

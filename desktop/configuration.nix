@@ -162,6 +162,7 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  nix.extraOptions = ''trusted-users = root user'';
   nix.settings.auto-optimise-store = true;
   nix.settings.experimental-features = [
     "nix-command"
