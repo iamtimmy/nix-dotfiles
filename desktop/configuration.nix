@@ -43,21 +43,21 @@
     "iommu=pt"
   ];
 
-  boot.extraModulePackages = with config.boot.kernelPackages; [
-    v4l2loopback.out
-  ];
+  # boot.extraModulePackages = with config.boot.kernelPackages; [
+  #   v4l2loopback.out
+  # ];
 
-  boot.kernelModules = [
-    # Virtual Camera
-    "v4l2loopback"
-    # Virtual Microphone, built-in
-    "sdn-aloop"
-  ];
+  # boot.kernelModules = [
+  #   # Virtual Camera
+  #   "v4l2loopback"
+  #   # Virtual Microphone, built-in
+  #   "sdn-aloop"
+  # ];
 
-  boot.extraModprobeConfig = ''
-    # https://github.com/umlaeute/v4l2loopback
-    options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
-  '';
+  # boot.extraModprobeConfig = ''
+  #   # https://github.com/umlaeute/v4l2loopback
+  #   options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
+  # '';
 
   hardware.cpu.amd.updateMicrocode = true;
 

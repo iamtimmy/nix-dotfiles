@@ -1,13 +1,15 @@
 {
   buildDotnetModule,
-  fetchgit,
   dotnetCorePackages,
-  buildNpmPackage,
-  lib,
+  fetchFromGitLab,
+  callPackage,
+
   libz,
   icu,
   openssl,
+
   xorg,
+
   gtk3,
   glib,
   nss,
@@ -25,65 +27,45 @@
   mesa,
   libGL,
   libsecret,
-  gitUpdater,
 }:
 let
-  version = "3";
-  src = fetchgit {
-    url = "https://gitlab.futo.org/videostreaming/Grayjay.Desktop";
-    tag = version;
-    hash = "sha256-gI1M/rDTSH16eeknHJfLA2iawoA5iGTKHfwUW4/lvv8=";
+  grayjay-web = callPackage ./grayjay-web.nix {};
+in
+buildDotnetModule {
+  pname = "grayjay-desktop";
+  version = "0-unstable-2025-16-01";
+
+  src = fetchFromGitLab {
+    domain = "gitlab.futo.org";
+    owner = "VideoStreaming";
+    repo = "Grayjay.Desktop";
+    rev = "08d8f13cc2e3effe8c54106fc3ee7fdd27ef9547";
+    hash = "sha256-M1/RpaAse9Kzizpmgxbrnzh37vriKKigM0sdrLX3BBM=";
     fetchSubmodules = true;
     fetchLFS = true;
   };
-  frontend = buildNpmPackage {
-    name = "grayjay-frontend";
-    inherit version src;
-    sourceRoot = "Grayjay.Desktop/Grayjay.Desktop.Web";
-    npmBuildScript = "build";
-    npmDepsHash = "sha256-pTEbMSAJwTY6ZRriPWfBFnRHSYufSsD0d+hWGz35xFM=";
-    installPhase = ''
-      runHook preInstall
-      cp -r dist/ $out
-      runHook postInstall
-    '';
-  };
-in
-buildDotnetModule {
-  pname = "grayjay";
-  inherit version src;
-  projectFile = [
-    "Grayjay.ClientServer/Grayjay.ClientServer.csproj"
-    "Grayjay.Engine/Grayjay.Engine/Grayjay.Engine.csproj"
-    "Grayjay.Desktop.CEF/Grayjay.Desktop.CEF.csproj"
-    "FUTO.MDNS/FUTO.MDNS/FUTO.MDNS.csproj"
-    "JustCef/DotCef.csproj"
-  ];
-  testProjectFile = [
-    "Grayjay.Desktop.Tests/Grayjay.Desktop.Tests.csproj"
-    "Grayjay.Engine/Grayjay.Engine.Tests/Grayjay.Engine.Tests.csproj"
-  ];
-  nugetDeps = ./grayjay_deps.json;
+
+  patches = [ ./grayjay.patch ];
+
+  executables = "Grayjay";
+
+  dotnet-sdk = dotnetCorePackages.sdk_8_0;
   dotnet-runtime = dotnetCorePackages.aspnetcore_8_0;
-  executables = [ "Grayjay" ];
-  preBuild = ''
-    rm -r Grayjay.ClientServer/wwwroot/web
-    cp -r ${frontend} Grayjay.ClientServer/wwwroot/web
-  '';
+
+  nugetDeps = ./grayjay_deps.json;
+  projectFile = "Grayjay.Desktop.CEF/Grayjay.Desktop.CEF.csproj";
+
   postInstall = ''
-    chmod +x $out/lib/grayjay/cef/dotcefnative
-    rm $out/lib/grayjay/Portable
-    ln -s /tmp/grayjay-launch $out/lib/grayjay/launch
-    ln -s /tmp/grayjay-cef-launch $out/lib/grayjay/cef/launch
+    rm $out/lib/grayjay-desktop/Portable
+    mkdir -p $out/lib/grayjay-desktop/wwwroot
+    ln -s ${grayjay-web} $out/lib/grayjay-desktop/wwwroot/web
   '';
-  makeWrapperArgs = [
-    "--chdir"
-    "${placeholder "out"}/lib/grayjay"
-  ];
+
   runtimeDeps = [
     libz
     icu
     openssl # For updater
+
     xorg.libX11
     xorg.libXcomposite
     xorg.libXdamage
@@ -91,6 +73,7 @@ buildDotnetModule {
     xorg.libXfixes
     xorg.libXrandr
     xorg.libxcb
+
     gtk3
     glib
     nss
@@ -109,14 +92,9 @@ buildDotnetModule {
     libGL
     libsecret
   ];
-  passthru.updateScript = gitUpdater { };
+
   meta = {
-    description = "Multi-platform media application that allows you to watch content from multiple platforms in a single application";
-    longDescription = ''Grayjay is a multi-platform media application that allows you to watch content from multiple platforms in a single application. Using an extendable plugin system developers can make new integrations with additional platforms. Plugins are cross-compatible between Android and Desktop.'';
-    homepage = "https://grayjay.app/desktop/";
-    # license = lib.licenses.sfl;
-    maintainers = with lib.maintainers; [ samfundev ];
-    platforms = lib.platforms.linux;
     mainProgram = "Grayjay";
   };
 }
+

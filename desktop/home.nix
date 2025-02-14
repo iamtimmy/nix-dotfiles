@@ -15,8 +15,11 @@ in
   ];
 
   home.packages = with pkgs; [
+    remmina
+
     vlc
     vesktop
+    simplex-chat-desktop
     telegram-desktop
     grayjay
     freetube

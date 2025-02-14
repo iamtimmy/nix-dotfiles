@@ -1,19 +1,21 @@
 { config, pkgs, ... }:
 
 let
-  hid-tmff2 = config.boot.kernelPackages.callPackage ../pkgs/hid-tmff2.nix { };
-  oversteer = pkgs.callPackage ../pkgs/oversteer.nix { };
-
+  # hid-tmff2 = config.boot.kernelPackages.callPackage ../pkgs/hid-tmff2.nix { };
+  # oversteer = pkgs.callPackage ../pkgs/oversteer.nix { };
+  # oversteer = pkgs.oversteer;
   universal-pidff = config.boot.kernelPackages.callPackage ../pkgs/universal-pidff.nix { };
   # boxflat = pkgs.callPackage ../pkgs/boxflat_old.nix { };
 in
 {
-  boot.blacklistedKernelModules = [ "hid-thrustmaster" ];
-  boot.extraModulePackages = [ hid-tmff2 universal-pidff ];
-  boot.kernelModules = [ "hid-tmff2" "universal-pidff" ];
+  # boot.blacklistedKernelModules = [ "hid-thrustmaster" ];
+  # boot.extraModulePackages = [ hid-tmff2 universal-pidff ];
+  # boot.kernelModules = [ "hid-tmff2" "universal-pidff" ];
+  boot.kernelModules = ["universal-pidff" ];
+  boot.extraModulePackages = [ universal-pidff ];
 
   environment.systemPackages = with pkgs; [
-    oversteer
+    # oversteer
     # boxflat
 
     opentrack
@@ -24,5 +26,5 @@ in
     SUBSYSTEM=="tty", KERNEL=="ttyACM*", ATTRS{idVendor}=="346e", ACTION=="add", MODE="0666", TAG+="uaccess"
   '';
 
-  services.udev.packages = [ oversteer ];
-}
+  # services.udev.packages = [ oversteer ];
+  }

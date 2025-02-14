@@ -4,8 +4,6 @@
   home.packages = with pkgs; [
     nixd
     nil
-    nixpkgs-fmt
-    nixfmt-rfc-style
     alejandra
 
     zls

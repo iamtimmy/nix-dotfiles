@@ -1,0 +1,56 @@
+From 3f59f9da83c1d935b2037f9a0ab5c000a997dcf9 Mon Sep 17 00:00:00 2001
+From: michaelBelsanti <quasigod-io@proton.me>
+Date: Tue, 14 Jan 2025 19:14:18 -0500
+Subject: [PATCH] nix fixes
+
+---
+ Grayjay.ClientServer/GrayjayServer.cs | 11 ++---------
+ Grayjay.Desktop.CEF/Program.cs        |  8 --------
+ 2 files changed, 2 insertions(+), 17 deletions(-)
+
+diff --git a/Grayjay.ClientServer/GrayjayServer.cs b/Grayjay.ClientServer/GrayjayServer.cs
+index 92be47e..c971f50 100644
+--- a/Grayjay.ClientServer/GrayjayServer.cs
++++ b/Grayjay.ClientServer/GrayjayServer.cs
+@@ -129,15 +129,8 @@ namespace Grayjay.ClientServer
+             }
+             else
+             {
+-                string staticFilesPath = Path.GetFullPath("wwwroot");
+-                if (OperatingSystem.IsMacOS())
+-                {
+-                    string? executableDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule?.FileName);
+-                    if (!File.Exists(staticFilesPath) && executableDirectory != null)
+-                        staticFilesPath = Path.Combine(executableDirectory, "wwwroot");
+-                    if (!File.Exists(staticFilesPath) && executableDirectory != null)
+-                        staticFilesPath = Path.Combine(executableDirectory, "../Resources/wwwroot");
+-                }
++                string? executableDirectory = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule?.FileName);
++                string staticFilesPath = Path.Combine(executableDirectory, "wwwroot");
+ 
+                 Logger.i(nameof(GrayjayServer), $"RunServerAsync: Static files path '" + Path.GetFullPath(staticFilesPath) + "'.");
+                 _app.UseStaticFiles(new StaticFileOptions
+diff --git a/Grayjay.Desktop.CEF/Program.cs b/Grayjay.Desktop.CEF/Program.cs
+index 81f757d..783c3dd 100644
+--- a/Grayjay.Desktop.CEF/Program.cs
++++ b/Grayjay.Desktop.CEF/Program.cs
+@@ -245,14 +245,6 @@ namespace Grayjay.Desktop
+             File.Delete(PortFile);
+             File.WriteAllText(StartingUpFile, "");
+ 
+-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+-            {
+-                Process p = Process.GetCurrentProcess();
+-                File.WriteAllText("launch", Path.GetFileName(p.MainModule!.FileName));
+-                if (Directory.Exists("cef"))
+-                    File.WriteAllText("cef/launch", "../" + Path.GetFileName(p.MainModule!.FileName));
+-            }
+-
+             Stopwatch startupTime = Stopwatch.StartNew();
+             int proxyParameter = Array.IndexOf(args, "-proxy");
+             string? proxyUrl = null;
+-- 
+2.47.0
+
+
+
