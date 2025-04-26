@@ -22,10 +22,10 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # disko = {
+    #   url = "github:nix-community/disko";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -48,11 +48,11 @@
           ];
         };
 
-        server = nixpkgs.lib.nixosSystem {
+        pve-nixos-server = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
             ./server/configuration.nix
-            inputs.disko.nixosModules.disko
+            # inputs.disko.nixosModules.disko
           ];
         };
       };
