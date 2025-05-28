@@ -48,7 +48,7 @@
           ];
         };
 
-        pve-nixos-server = nixpkgs.lib.nixosSystem {
+        nix-server = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
             ./server/configuration.nix

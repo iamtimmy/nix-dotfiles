@@ -11,10 +11,10 @@
     # ./disko-config.nix
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "pve-nixos-server";
+  networking.hostName = "nix-server";
   time.timeZone = "Europe/Amsterdam";
 
   users.users = {
@@ -45,7 +45,7 @@
   programs.nh = {
     enable = true;
     clean.enable = true;
-    clean.extraArgs = "--keep-since 4d --keep 10";
+    clean.extraArgs = "--keep-since 4d --keep 5";
   };
 
   programs.git = {
@@ -61,7 +61,7 @@
   programs.firejail.enable = true;
 
   environment.sessionVariables = {
-    FLAKE = "$HOME/dotfiles";
+    FLAKE = "$HOME/nix-dotfiles";
 
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_HOME = "$HOME/.config";
